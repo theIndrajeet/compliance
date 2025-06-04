@@ -1,0 +1,2935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Clinical Compliance Intelligence Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f0f10;
+            --darker: #050506;
+            --card: #18181b;
+            --border: #27272a;
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-success: linear-gradient(135deg, #13CE66 0%, #36D1DC 100%);
+            --gradient-warning: linear-gradient(135deg, #FDC830 0%, #F37335 100%);
+            --gradient-danger: linear-gradient(135deg, #FC466B 0%, #3F5EFB 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Advanced Background */
+        .universe-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b1b2f 0%, #050506 100%);
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(45deg);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--gradient-1);
+            top: -300px;
+            left: -300px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--gradient-2);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -10s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--gradient-3);
+            top: 50%;
+            left: 50%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-100px, 100px) scale(0.9); }
+            75% { transform: translate(50px, 50px) scale(1.05); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 6, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(5, 5, 6, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            color: var(--text);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--text);
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; /* Adjust if navbar padding changes */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px; /* Adjust if nav height changes */
+            min-height: calc(100vh - 80px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #fff 50%, var(--primary) 50%, var(--secondary) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Section */
+        .section {
+            display: none;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Calculator Section */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .input-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-modern {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            background: var(--darker);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .select-modern:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .select-modern:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+        }
+
+        .calculate-btn, .ai-explain-btn { /* Shared styles for buttons */
+            width: 100%;
+            padding: 1.25rem;
+            margin-top: 1rem; /* Adjusted margin for AI button */
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .calculate-btn {
+             background: var(--gradient-1);
+             margin-top: 2rem; /* Original margin for main button */
+        }
+        .ai-explain-btn {
+            background: var(--gradient-3); /* Different gradient for AI button */
+        }
+
+
+        .calculate-btn::before, .ai-explain-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .calculate-btn:hover::before, .ai-explain-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .calculate-btn:hover, .ai-explain-btn:hover {
+            transform: translateY(-2px);
+        }
+        .calculate-btn:hover { box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+        .ai-explain-btn:hover { box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3); }
+
+
+        /* Result Display */
+        .result-display {
+            min-height: 400px;
+            background: var(--card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--primary), transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .result-display.active::before {
+            opacity: 0.1;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .result-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .result-status {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 400px;
+            line-height: 1.6;
+            white-space: pre-wrap; /* To respect newlines from notes */
+        }
+
+        .result-details {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--darker);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        #aiSummaryDisplay {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(var(--primary-rgb, 99, 102, 241), 0.05); /* Slightly different background */
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px; /* Can be wider */
+            text-align: left;
+            line-height: 1.7;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        #aiSummaryDisplay h4 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        #aiSummaryDisplay p {
+            margin-bottom: 0.5rem;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+
+        /* Status Indicators */
+        .status-allowed { color: var(--success); }
+        .status-conditional { color: var(--warning); }
+        .status-denied { color: var(--danger); }
+
+        /* Data Table */
+        .table-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-btn {
+            padding: 1rem 1.5rem;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .table-wrapper {
+            background: var(--card);
+            border-radius: 20px;
+            overflow-x: auto; /* Added for horizontal scroll on small screens */
+            position: relative;
+        }
+
+        .modern-table {
+            width: 100%;
+            min-width: 800px; /* Ensure table content doesn't wrap too aggressively */
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .modern-table th {
+            background: var(--darker);
+            padding: 1.25rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modern-table td {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap; /* Prevent content wrapping in cells initially */
+        }
+        .modern-table td:nth-child(5) { /* Requirements column */
+            white-space: normal; /* Allow requirements to wrap */
+            min-width: 250px; /* Give requirements column more space */
+        }
+
+
+        .modern-table tr:hover td {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-pill.allowed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-pill.conditional {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-pill.denied {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        /* Country Cards */
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .country-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex; /* For better internal alignment */
+            flex-direction: column; /* Stack content vertically */
+        }
+
+        .country-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1; 
+        }
+
+        .country-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .country-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .country-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem; 
+            margin-bottom: 1.5rem;
+        }
+
+        .country-flag {
+            width: 60px;
+            height: 40px;
+            background: var(--darker); 
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Adjusted for potentially larger flags */
+            border: 1px solid var(--border);
+            flex-shrink: 0; /* Prevent flag from shrinking */
+        }
+        .country-flag img { /* If using img for flags */
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 6px; /* Slightly smaller than container for padding effect */
+        }
+
+
+        .country-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .country-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        .country-card-body {
+            flex-grow: 1; /* Allow body to take remaining space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes footer to bottom */
+        }
+        .country-card-footer {
+            margin-top: 1.5rem; 
+            color: var(--primary); 
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+        }
+
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active {
+            display: flex; 
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: var(--card); 
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            z-index: 10;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .modal-header h2 { 
+            flex-grow: 1;
+        }
+
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-close {
+            position: relative; 
+            top: auto; 
+            right: auto; 
+            width: 40px;
+            height: 40px;
+            background: var(--darker);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0; 
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        /* Requirements Grid */
+        .requirements-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .requirement-card {
+            background: var(--darker);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .requirement-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .requirement-content {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .requirement-content p {
+            margin-bottom: 0.5rem;
+        }
+        .requirement-content p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, var(--card) 25%, var(--border) 50%, var(--card) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .countries-grid {
+                grid-template-columns: 1fr; 
+            }
+
+            .hero h1 {
+                font-size: 2.5rem; 
+            }
+
+            .nav-menu {
+                display: none; 
+            }
+             .nav-container {
+                padding: 0 1rem;
+            }
+            .container {
+                padding: 2rem 1rem;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .modal-header, .modal-body {
+                padding: 1.5rem;
+            }
+            .modern-table td, .modern-table th {
+                padding: 0.75rem; /* Smaller padding for table cells on mobile */
+                font-size: 0.8rem; /* Smaller font for table content on mobile */
+            }
+            .modern-table td:nth-child(5) { /* Requirements column */
+                 min-width: 150px; 
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--darker);
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 100; 
+        }
+
+        .tooltip:hover .tooltip-content {
+            opacity: 1;
+        }
+
+        /* Status Animations */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="universe-bg">
+        <div class="stars"></div>
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                        <path d="M2 17L12 22L22 17"/>
+                        <path d="M2 12L12 17L22 12"/>
+                    </svg>
+                </div>
+                <span>Global Compliance</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="showSection(event, 'calculator')">Calculator</li>
+                <li class="nav-item" onclick="showSection(event, 'matrix')">Compliance Matrix</li>
+                <li class="nav-item" onclick="showSection(event, 'countries')">Country Database</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Calculator Section -->
+            <section id="calculator" class="section active">
+                <div class="hero">
+                    <h1 class="fade-in">Cross-Border Compliance Intelligence</h1>
+                    <p class="fade-in" style="animation-delay: 0.1s">
+                        Advanced regulatory analysis across jurisdictions worldwide
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <div style="text-align: center;">
+                            <div id="jurisdictionCountHero" style="font-size: 2rem; font-weight: 700; color: var(--primary);">0</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">Jurisdictions</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--secondary);">5</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">Service Types</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div id="regionCountHero" style="font-size: 2rem; font-weight: 700; color: var(--success);">0</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">Global Regions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-grid">
+                    <div class="input-card glass-card slide-up">
+                        <h2>Configure Analysis Parameters</h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+                                </svg>
+                                Client Location
+                            </label>
+                            <div class="select-wrapper">
+                                <select class="select-modern" id="clientCountry">
+                                    <option value="">Select destination country/state...</option>
+                                    {/* Options populated by JS */}
+                                </select>
+                                <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                Provider Location
+                            </label>
+                            <div class="select-wrapper">
+                                <select class="select-modern" id="providerCountry">
+                                    <option value="">Select provider country/state...</option>
+                                     {/* Options populated by JS */}
+                                </select>
+                                <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11H3v10h6V11z"/>
+                                    <path d="M15 3H9v18h6V3z"/>
+                                    <path d="M21 7h-6v14h6V7z"/>
+                                </svg>
+                                Service Type
+                            </label>
+                            <div class="select-wrapper">
+                                <select class="select-modern" id="serviceType">
+                                    <option value="">Select service type...</option>
+                                    <option value="counselling">Counselling Services</option>
+                                    <option value="counselling-psychology">Counselling Psychology</option>
+                                    <option value="psychology">General Psychology Services</option>
+                                    <option value="clinical">Clinical Psychology</option>
+                                    <option value="coaching">Mental Health Coaching</option>
+                                </select>
+                                <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <button class="calculate-btn" onclick="analyzeCompliance()">
+                            <span>Analyze Compliance</span>
+                        </button>
+                    </div>
+
+                    <div class="result-display glass-card" id="resultDisplay">
+                        <div style="text-align: center; color: var(--text-muted);">
+                            <div class="result-icon" style="margin: 0 auto 2rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                            </div>
+                            <p>Configure parameters and analyze to see compliance status</p>
+                        </div>
+                        <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
+                             {/* AI Explanation Button and Display Area will be injected here by JS */}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                    <div class="glass-card">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600;">Allowed</h3>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.6;">
+                            Cross-border services permitted with standard client consent. No additional regulatory barriers.
+                        </p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                    <line x1="12" y1="9" x2="12" y2="13"/>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600;">Conditional</h3>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.6;">
+                            Services allowed under specific conditions. May require additional licensing or notifications.
+                        </p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="15" y1="9" x2="9" y2="15"/>
+                                    <line x1="9" y1="9" x2="15" y2="15"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600;">Not Allowed</h3>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.6;">
+                            Cross-border services prohibited without local licensure. Provider must obtain destination credentials.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matrix Section -->
+            <section id="matrix" class="section">
+                <div class="hero">
+                    <h1 class="fade-in">Global Compliance Matrix</h1>
+                    <p class="fade-in" style="animation-delay: 0.1s">
+                        Comprehensive cross-border permissions
+                    </p>
+                </div>
+
+                <div class="table-controls">
+                    <div class="search-box">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search countries, regions, or regulations..." id="matrixSearch" onkeyup="filterMatrix()">
+                    </div>
+                    <button class="filter-btn" onclick="toggleFilter('allowed')" data-filter="allowed">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Allowed
+                    </button>
+                    <button class="filter-btn" onclick="toggleFilter('conditional')" data-filter="conditional">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        </svg>
+                        Conditional
+                    </button>
+                    <button class="filter-btn" onclick="toggleFilter('denied')" data-filter="denied">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                        </svg>
+                        Not Allowed
+                    </button>
+                </div>
+
+                <div class="table-wrapper glass-card">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Provider Location</th>
+                                <th>Client Location</th>
+                                <th>Service Type</th>
+                                <th>Status</th>
+                                <th>Requirements</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrixTableBody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Countries Section -->
+            <section id="countries" class="section">
+                <div class="hero">
+                    <h1 class="fade-in">Country Requirements Database</h1>
+                    <p class="fade-in" style="animation-delay: 0.1s">
+                        Detailed regulatory frameworks across global regions
+                    </p>
+                </div>
+
+                <div class="countries-grid" id="countriesGrid">
+                    <!-- Country cards will be populated dynamically -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modalTitle">Country Details</h2>
+                <div class="modal-close" onclick="closeModal(event)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate stars
+        const starsContainer = document.querySelector('.stars');
+        if (starsContainer) { // Check if element exists
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (navbar) { // Check if element exists
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+        });
+        
+        // --- DATA STRUCTURE ---
+        const complianceData = {
+            jurisdictions: { // Populated with user-provided comprehensive list
+                "United States": ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
+                "Europe": ["Albania","Andorra","Austria","Belarus","Belgium","Bosnia and Herzegovina","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Italy","Kosovo","Latvia","Liechtenstein","Lithuania","Luxembourg","Malta","Moldova","Monaco","Montenegro","Netherlands","North Macedonia","Norway","Poland","Portugal","Romania","San Marino","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],
+                "Latin America": ["Argentina","Bolivia","Brazil","Chile","Colombia","Costa Rica","Cuba","Dominican Republic","Ecuador","El Salvador","Guatemala","Honduras","Mexico","Nicaragua","Panama","Paraguay","Peru","Puerto Rico","Uruguay","Venezuela"],
+                "Middle East": ["Afghanistan","Bahrain","Iran","Iraq","Israel","Jordan","Kuwait","Lebanon","Oman","Palestine","Qatar","Saudi Arabia","Syria","Turkey","United Arab Emirates","Yemen"],
+                "Asia": ["Afghanistan","Armenia","Azerbaijan","Bahrain","Bangladesh","Bhutan","Brunei","Cambodia","China","Georgia","Hong Kong","India","Indonesia","Japan","Kazakhstan","Kuwait","Kyrgyzstan","Laos","Macau","Malaysia","Maldives","Mongolia","Myanmar","Nepal","North Korea","Oman","Pakistan","Philippines","Qatar","Saudi Arabia","Singapore","South Korea","Sri Lanka","Taiwan","Tajikistan","Thailand","Timor-Leste","Turkmenistan","United Arab Emirates","Uzbekistan","Vietnam","Yemen"],
+                "Africa": ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo","Côte d'Ivoire","Democratic Republic of the Congo","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","Sao Tome & Principe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"],
+                "ANZ": ["Australia","New Zealand"],
+                "Pacific Islands": ["Fiji","Kiribati","Marshall Islands","Micronesia","Nauru","Palau","Papua New Guinea","Samoa","Solomon Islands","Tonga","Tuvalu","Vanuatu"]
+            },
+            jobRoles: ['Counsellor', 'Counselling Psychologist', 'Clinical Psychologist', 'Psychologist', 'Mental Health Coach'],
+            rules: [ 
+                { clientColorCode: 'Green', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: 'No', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
+                { clientColorCode: 'Green', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: 'Yes (meets local conditions)', canEnableCrossBorder: 'Yes', notes: "Inbound services–No issue here as the provider in the blue zone is only blue for Inbound services.\n\nFor outbound services: Provider from Blue zone to client in Green zone.\n1. Provider information e.g. Full name, Credentials – qualification and institute name and Licenses (if any).\n2. So the Client can choose the provider and consent to their services.\n3. Services should be limited to consultation. We will not have capacity to prescribe medication, diagnose and treat the client.\n4. If our clinician were to provide \"care treatment\" for legal/regime, activity, process, practice or any alternative wording.", updated: '2024-06-04' },
+                { clientColorCode: 'Green', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: "Even if client is in Green, provider’s country prohibits export – is this a blocker?\nInbound services–No issue here as the provider in the Red zone is only red for Inbound services.\n\nFor outbound services: Provider from Red zone to client in Green zone.\n1. Provider information e.g. Full name, Credentials – qualification and institute name and Licenses (if any).\n2. So the Client can choose the provider and consent to their services.", updated: '2024-06-04' },
+                { clientColorCode: 'Blue', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
+                { clientColorCode: 'Blue', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
+                { clientColorCode: 'Blue', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'May be, dependent on the Blue country’s compliance rules', canEnableCrossBorder: 'Yes, consult Clinical for final approval. Provider in a Blue-to-Red scenario usually requires local legal sign-off.', notes: "Yes, consult Clinical for final approval. Provider in a Blue-to-Red scenario usually requires local legal sign-off.", updated: '2024-06-04' },
+                { clientColorCode: 'Red', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: "No, unless the Provider has the specific country's license/qualification requirements.", canEnableCrossBorder: 'No', notes: "Inbound services–The provider in the Green zone can serve inbound.\nFor outbound services: Provider in Red zone to client in Green zone–they must hold the specific local license to practice.", updated: '2024-06-04' },
+                { clientColorCode: 'Red', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: "No, unless the Provider has the specific country's license/qualification requirements.", canEnableCrossBorder: 'No', notes: "Inbound services–The provider in the Blue zone can serve inbound for consultation only.\nFor outbound services: Provider from Red to client in Blue–Provider must hold Blue-zone license or have temporary registration.", updated: '2024-06-04' },
+                { clientColorCode: 'Red', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: "No, unless the Provider has \nthe specific country's license/ \nqualification requirements.", notes: "Inbound services: The provider in the Red zone is red for Inbound services. They must have the \nrequired license or qualification to practise (i.e. provide services) within the country.\n\nFor outbound services:\nOnly for those who have the specific license/specific qualification required.\n(E.g. a resident who migrates internationally can still provide online cross-border services.)", updated: '2024-06-04' }
+                // ... ALL OTHER ROWS FROM "Cross-border matching matrix.csv" WILL GO HERE
+            ],
+            countries: { // THIS IS THE SECTION UPDATED WITH USER-PROVIDED DATA
+                "Germany": {
+                    name: "Germany",
+                    flag: "🇩🇪",
+                    region: "Europe",
+                    regulatory: "BPtK / State Chambers (Länderkammern)",
+                    colorCode: "green",
+                    counselling: {
+                    regulated: false,
+                    requirements: "Non-therapeutic counselling largely unregulated. 'Heilpraktiker für Psychotherapie' license required for therapeutic practice without full psychologist/psychotherapist license.",
+                    training: "Various vocational pathways; no unified national standard for non-therapeutic counselling. Heilpraktiker requires passing an exam.",
+                    renewal: "Depends on the certification body or Heilpraktiker rules; typically annual CME credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologischer Psychotherapeut' or 'Kinder- und Jugendlichenpsychotherapeut' require Approbation (state license) with Staatsexamen.",
+                    training: "Master's in Psychology followed by 3-5 years of postgraduate psychotherapy training (Ausbildungsinstitut) with 600 hours theoretical coursework and 1,200 hours practical training.",
+                    renewal: "Continuing education mandatory as directed by the State Chamber; frequency varies by Länderkammer (approximately 20-40 hours per year)."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Approbation as Psychologischer Psychotherapeut; must complete specialized postgraduate program in psychotherapy."
+                    ,training: "Direct-study programs (Direktstudium Psychotherapie) being implemented; until then, Master's + postgraduate training.",
+                    renewal: "State chamber requires ongoing CME; re-approval every five years through portfolio submission."
+                    },
+                    notes: "EU Professional Qualifications Directive applies for EU/EEA/Swiss nationals—automatic recognition with attestation of equivalence for non-EU. No prescriptions by psychologists; psychopharmacology reserved for medical doctors.",
+                    crossBorder: {
+                    inbound: "EU mobility rules allow qualified psychotherapists to practice with notification; non-EU applicants must pass language proficiency and equivalency exam.",
+                    outbound: "Licensed German psychotherapists can treat EU clients in Europe under PQD; outside EU, follow destination country regulations."
+                    },
+                    updated: "2024-06-04"
+                },
+                "France": {
+                    name: "France",
+                    flag: "🇫🇷",
+                    region: "Europe",
+                    regulatory: "Agence Régionale de Santé (ARS)",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "Non-psychotherapeutic counselling is unregulated. The title 'Psychothérapeute' protected for those with specific training under ARS.",
+                    training: "No mandatory training for basic counselling; psychotherapeutic training: Master's in Psychology or Psychiatry + 2 years supervised internship.",
+                    renewal: "Continuing professional development (DPC) required every three years (minimum 40 hours)."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Licensed psychologists hold 'Titre de Psychologue' with Master 2 in Psychology and state certification.",
+                    training: "Five-year university program in Psychology (Licence + Master) including 12-month internship.",
+                    renewal: "Annual DPC credit submission."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Psychiatre' must have a medical degree + 4-year residency in psychiatry; 'Psychothérapeute' must have Master 2 in Psychology or Psychiatry + 2-year specialized psychotherapeutic training.",
+                    training: "Residency or specialized institute program, including 500 hours of supervised clinical practice.",
+                    renewal: "DPC every three years; license automatically renewed if DPC is complete."
+                    },
+                    notes: "Telehealth allowed since 2018 for psychologists and psychiatrists, with no additional licensure required; must register tele-consultations with ARS.",
+                    crossBorder: {
+                    inbound: "EU Psychologists authorized under PQD; non-EU need equivalence recognition through ARS.",
+                    outbound: "French psychologists can provide services in EU; outside EU, must verify local licensure requirements."
+                    },
+                    updated: "2024-06-04"
+                },
+                "United States": {
+                    name: "United States",
+                    flag: "🇺🇸",
+                    region: "United States",
+                    regulatory: "State Psychology Boards / PSYPACT",
+                    colorCode: "varies",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No single federal licensure; ICF certification recommended. Titles like 'Licensed Professional Counselor (LPC)' regulated by each state board.",
+                    training: "Typically Master’s in Counseling or related field; 60+ credit hours; 600+ clinical hours.",
+                    renewal: "Varies by state; common requirement is 30 CE hours biennially."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "State licensure required for 'Licensed Psychologist'; Doctoral degree (Ph.D. or Psy.D.); EPPP exam; state jurisprudence exam."
+                    ,training: "3,000–4,000 supervised practice hours under licensed psychologist; internship in APA-approved program."
+                    ,renewal: "Biennial renewal; typically 20–40 CE hours, depending on state."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Same as 'Licensed Psychologist' plus clinical specialization; APA-accredited program recommended; independent practice requires state licensure."
+                    ,training: "Includes internship and post-doctoral supervised hours; 1,500–2,000 hours for post-doc in many states."
+                    ,renewal: "CE hours biennially (20–40 hours). Some states require supervised practice for re-licensure."
+                    },
+                    notes: "PSYPACT facilitates interstate practice for eligible psychologists; counselors regulated by LPC/LCSW boards. Telehealth permitted if clinician is licensed in client’s state or under PSYPACT."
+                    ,crossBorder: {
+                    inbound: "Foreign-trained clinicians must have doctorate from regionally accredited program; EPPP pass; credential review by state board.",
+                    outbound: "U.S. licensed psychologists can practice in PSYPACT states; outside PSYPACT or outside U.S., must hold local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Canada": { // Note: User's data places Canada in "United States" region for this list.
+                    name: "Canada",
+                    flag: "🇨🇦",
+                    region: "United States", 
+                    regulatory: "Provincial/Territorial Colleges of Psychologists (e.g., College of Psychologists of Ontario)",
+                    colorCode: "varies", 
+                    counselling: {
+                    regulated: false, 
+                    requirements: "No national licensing for counselling; 'Registered Psychotherapist' regulated in Ontario only. Elsewhere, ICF certification recommended. ",
+                    training: "Master’s in Counselling Psychology or Psychology; 60+ credit hours; supervised practicum (500+ hours).",
+                    renewal: "Varies by province; typically 30 CE hours every two years."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Provincial registration as 'Registered Psychologist' requires Master’s or Doctorate in Psychology; passing provincial exams. ",
+                    training: "1,600–2,000 supervised practice hours; registration with provincial college. ",
+                    renewal: "Annual renewal with minimum 20–30 CE credits."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Regulated under same 'Registered Psychologist' title; clinical specialization must be documented in application. ",
+                    training: "Additional clinical internship (e.g., 1600+ hours) depending on province; doctoral degree often required for independent practice. ",
+                    renewal: "CE hours (20–40) yearly; some provinces require Jurisprudence exam."
+                    },
+                    notes: "Telehealth permitted across provinces if clinician registered in province where client resides. Some provinces require notification to the client’s provincial regulator.",
+                    crossBorder: {
+                    inbound: "Foreign degrees evaluated by Canadian Psychological Association or provincial credential assessment service; provincial board approval required.",
+                    outbound: "Canadian-licensed psychologists can provide telehealth to Canadian clients in any province; outside Canada must meet local licensure."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Argentina": {
+                    name: "Argentina",
+                    flag: "🇦🇷",
+                    region: "Latin America",
+                    regulatory: "Consejo Federal de Psicología",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Psicólogo Clínico' requires licenciatura (5-year degree) + habilitación municipal. ",
+                    training: "Undergraduate program of 5 years including theoretical and practical modules; mandatory internship ~1,500 hours.",
+                    renewal: "Annual registration with the Colegio de Psicólogos; 30–40 CE hours per year."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Licensed Psychologist requires degree + registration with provincial Colegio. ",
+                    training: "Same as counselling; licensure exam varies by province. ",
+                    renewal: "Same as counselling: annual registration, 30-40 CE."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "No separate 'Clinical Psychologist' license; same credential as 'Psicólogo Clínico'. ",
+                    training: "Postgraduate specialization (2 years) recommended, though not strictly required. ",
+                    renewal: "Annual CE requirements; provincial board dictates."
+                    },
+                    notes: "Telehealth allowed since 2020 under emergency decree; must comply with Ley Nacional de Ejercicio Profesional. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need degree equivalence from Universidad Nacional; provincial habilitation required. ",
+                    outbound: "Argentinian psychologists can practice in MERCOSUR countries under mutual recognition; otherwise, must follow local rules. "
+                    },
+                    updated: "2024-06-04"
+                },
+                "Brazil": {
+                    name: "Brazil",
+                    flag: "🇧🇷",
+                    region: "Latin America",
+                    regulatory: "Conselho Federal de Psicologia (CFP)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Psicólogo' requires bachelor's degree in Psychology (5 years) + CFP registration.",
+                    training: "Undergraduation including mandatory supervised internship of 2,400 hours. ",
+                    renewal: "Biennial re-registration; 180 CE hours every two years."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Same as counselling for 'Psicólogo'. ",
+                    training: "Same as counselling. ",
+                    renewal: "Biennial, 180 CE."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Clinical specialization in postgraduate residency; 2-year supervised residency for 'Psicologia Clinica'. ",
+                    training: "Postgraduate lato sensu or stricto sensu program, including supervised clinical rotations. ",
+                    renewal: "Same as above."
+                    },
+                    notes: "Telepsychology regulated since 2018 under CFP normative resolution; can only provide to Brazilian residents. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists must have degree validated (revalidação) by Brazilian university; CFP re-registration required. ",
+                    outbound: "Brazilian psychologists can practice in MERCOSUR under mutual agreement; outside needs local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Chile": {
+                    name: "Chile",
+                    flag: "🇨🇱",
+                    region: "Latin America",
+                    regulatory: "Colegio de Psicólogos de Chile",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "Undergraduate degree in Psychology (5 years) + certification by Colegio de Psicólogos. ",
+                    training: "Includes 800 hours supervised internship. ",
+                    renewal: "Annual registration; 20 CE hours every year."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Same as counselling; 'Psicólogo' is protected title. ",
+                    training: "Same as counselling. ",
+                    renewal: "Annual, 20 CE."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Postgraduate certificate in clinical psychology recommended but not mandatory; 1-year residency for specialized certification. ",
+                    training: "Residency program with 1,000 supervised hours. ",
+                    renewal: "Same as above; additional CME may be required."
+                    },
+                    notes: "Telehealth allowed since 2021 under Ministry of Health guidance; consent mandatory. ",
+                    crossBorder: {
+                    inbound: "Foreign professionals need degree validation via CONESUP; Colegio de Psicólogos re-registration required. ",
+                    outbound: "Chilean psychologists can practice in select MERCOSUR countries; outside region, follow local regulations."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Colombia": {
+                    name: "Colombia",
+                    flag: "🇨🇴",
+                    region: "Latin America",
+                    regulatory: "Departamento Administrativo de Ciencia, Tecnología e Innovación (COLCIENCIAS)",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "Professional degree in Psychology (5 years) + registration with Ministerio de Salud y Protección Social. ",
+                    training: "Internship of 1,600 hours. ",
+                    renewal: "Annual renewal; 30 CE hours every two years."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "Same as counselling; 'Psicólogo' protected title. ",
+                    training: "Same as counselling. ",
+                    renewal: "Annual, 30 CE per biennium."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "Clinical specialization postgraduate (2 years) required for 'Psicólogo Clínico'. ",
+                    training: "Residency-like program with 2,000 supervised hours. ",
+                    renewal: "Annual CME credits (40 hours)."
+                    },
+                    notes: "Telehealth regulated under resolution 2654 of 2019; psychologists can provide online services with prior registration to Ministerio de Salud. ",
+                    crossBorder: {
+                    inbound: "Foreign professionals need degree validation through Ministerio de Educación; license from Ministerio de Salud. ",
+                    outbound: "Colombian psychologists can practice in select CA countries under mutual recognition; outside region, local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "United Arab Emirates": {
+                    name: "United Arab Emirates",
+                    flag: "🇦🇪",
+                    region: "Middle East",
+                    regulatory: "Ministry of Health & Prevention (MOHAP) / Dubai Health Authority (DHA)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Licensed Counsellor' requires Master's in Counselling Psychology + DHA/MOHAP license. ",
+                    training: "2 years supervised clinical experience; 500 hours supervised practicum. ",
+                    renewal: "Annual license renewal with 30 CME hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Licensed Psychologist' requires Master’s in Clinical Psychology + 1-year supervised clinical internship under licensed psychologist. ",
+                    training: "Minimum 2,000 hours supervised practice. ",
+                    renewal: "Annual; 40 CME hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' must hold a Doctorate in Clinical Psychology or Master’s + 2-year residency. ",
+                    training: "3,000 supervised hours including internship in accredited hospital/clinic. ",
+                    renewal: "Annual license renewal; 50 CME hours."
+                    },
+                    notes: "Foreign degrees recognized if accredited by Ministry of Education; must pass DHA/MOHAP equivalency exam. Telehealth allowed if licensed in UAE and registered on Abu Dhabi, Dubai, or other emirate portal. ",
+                    crossBorder: {
+                    inbound: "Foreign providers must obtain local license; telehealth permitted only if clinician present in UAE at time of service. ",
+                    outbound: "UAE-licensed clinicians cannot provide services outside UAE unless licensed in that jurisdiction."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Saudi Arabia": {
+                    name: "Saudi Arabia",
+                    flag: "🇸🇦",
+                    region: "Middle East",
+                    regulatory: "Saudi Commission for Health Specialties (SCFHS)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Licensed Counsellor' requires Master’s in Counseling or Clinical Psychology + 1,000 supervised clinical hours. ",
+                    training: "Supervised practicum of 1,000 hours; SCFHS exam. ",
+                    renewal: "Biannual renewal with 30 CME hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' title protected; requires Master’s in Psychology + SCFHS license exam. ",
+                    training: "2,000 supervised hours post-degree. ",
+                    renewal: "Biannual; 40 CME hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
+                    training: "3,000 supervised clinical hours including hospital rotations. ",
+                    renewal: "Biannual renewal; 50 CME hours."
+                    },
+                    notes: "Foreign degrees require equivalency through MOH Portal and SCFHS; telehealth restricted to licensed professionals in KSA; no cross-border telepsychology. ",
+                    crossBorder: {
+                    inbound: "Foreign clinicians cannot practice remotely; must be physically present and licensed. ",
+                    outbound: "Saudi clinicians cannot provide remote services outside KSA without local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Israel": {
+                    name: "Israel",
+                    flag: "🇮🇱",
+                    region: "Middle East",
+                    regulatory: "Israel Ministry of Health / Israeli Association of Psychologists",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Licensed Counsellor' requires Master's in Counseling Psychology recognized by Council for Higher Education. ",
+                    training: "300 supervised practicum hours; 1,200 supervised clinical hours. ",
+                    renewal: "Annual license renewal; 30 CME credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Master’s in Psychology + 1,600 supervised hours; pass MOH exam. ",
+                    training: "Master’s with thesis and practicum (600 hours) + 1,000 hospital-based training hours. ",
+                    renewal: "Annual; 40 CME hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Doctorate in Clinical Psychology or Master’s + 2-year internship. ",
+                    training: "2,500 supervised clinical hours; internship in recognized institute. ",
+                    renewal: "Annual; 50 CME hours."
+                    },
+                    notes: "Telepsychology allowed since 2020; must register under MOH telehealth registry. ",
+                    crossBorder: {
+                    inbound: "EU/EFTA psychologists can practice under mutual recognition after 6-month supervised adaptation; others require MOH exam. ",
+                    outbound: "Israeli-licensed psychologists can practice in EU/EFTA under PQD; outside region need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "India": {
+                    name: "India",
+                    flag: "🇮🇳",
+                    region: "Asia",
+                    regulatory: "Rehabilitation Council of India (RCI) / National Clinical Establishment Authority (NCEA)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counselor' not a protected title; 'Clinical Psychologist' regulated by RCI under Mental Healthcare Act, 2017. ",
+                    training: "Master’s in Psychology + 1-year RCI-recognized internship (1,500 hours). ",
+                    renewal: "RCI registration renewal every 5 years with 40 CE credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' title protected under RCI; Master's in Psychology + RCI license exam. ",
+                    training: "Master’s with 2-year supervised internship. ",
+                    renewal: "RCI renewal every 5 years; minimum 40 CE credits."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires M.Phil in Clinical Psychology from RCI-recognized institute or PhD in Clinical Psychology. ",
+                    training: "2-year M.Phil program includes 4,000 supervised clinical hours. ",
+                    renewal: "RCI renewal every 5 years; 50 CE credits."
+                    },
+                    notes: "Telepsychology allowed under telemedicine guidelines 2020; registered professionals only. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists cannot practice without RCI registration; diploma/degree must be recognized via equivalence by University Grants Commission (UGC). ",
+                    outbound: "Indian psychologists can practice in India only; outside India must meet local licensure."
+                    },
+                    updated: "2024-06-04"
+                },
+                "China": {
+                    name: "China",
+                    flag: "🇨🇳",
+                    region: "Asia",
+                    regulatory: "Ministry of Health / Chinese Psychological Society (CPS)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "No unified national licensing for counsellors; 'Counseling Psychologist' certification under CPS. ",
+                    training: "Master's in Psychology + 500 supervised clinical hours; pass CPS certification exam. ",
+                    renewal: "Re-certification every 5 years with 60 CE credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' not protected; however, 'Clinical Psychologist' requires mental health practitioner license under National Health Commission. ",
+                    training: "Doctorate or Master's + 1-year residency in psychiatric hospital. ",
+                    renewal: "License renewal every 5 years; 50 CE credits."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires clinical psychology training + National Licensed Clinical Psychologist exam. ",
+                    training: "2-year residency program in recognized psychiatric institution. ",
+                    renewal: "License renewal every 5 years; 60 CE credits."
+                    },
+                    notes: "Telehealth permitted under National Health Commission guidelines; Cross-provincial practice allowed if licensed in home province; new regulations in 2023 require data localization. ",
+                    crossBorder: {
+                    inbound: "Foreign clinicians cannot provide clinical services without Chinese license; counselling via telehealth not explicitly regulated but discouraged. ",
+                    outbound: "Chinese psychologists can provide telehealth to Hong Kong/Macau with local registration; outside China prohibited without license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Japan": {
+                    name: "Japan",
+                    flag: "🇯🇵",
+                    region: "Asia",
+                    regulatory: "Ministry of Health, Labour and Welfare / Japanese Certified Clinical Psychologist Association",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No national licensure for counsellors; voluntary certification by Japan Association of Counseling. ",
+                    training: "Master’s in Counseling; 200 hours practicum. ",
+                    renewal: "Certification renewal every 5 years with 30 CE credits."
+                    },
+                    psychology: {
+                    regulated: false,
+                    requirements: "'Psychologist' not protected; 'Psychologist' certification via Japanese Psychological Association (JPA) voluntary. ",
+                    training: "Master’s program + practicum. ",
+                    renewal: "Voluntary re-certification every 5 years."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Psychiatrist' is medical doctor; 'Certified Clinical Psychologist' requires Master's in Clinical Psychology + 5-year supervised training. ",
+                    training: "5-year clinical psychology training including 2,000 hours supervised practice. ",
+                    renewal: "Renewal every 5 years with 50 CE credits."
+                    },
+                    notes: "Telepsychology permitted since 2016 under MHLW guidelines; no cross-prefecture restrictions if certified. ",
+                    crossBorder: {
+                    inbound: "Foreign clinical psychologists must pass Japanese National Exam for Clinical Psychologists; language proficiency (JLPT N1). ",
+                    outbound: "Japanese psychologists can practice in EU/US under local licensure; no automatic recognition."
+                    },
+                    updated: "2024-06-04"
+                },
+                "South Korea": {
+                    name: "South Korea",
+                    flag: "🇰🇷",
+                    region: "Asia",
+                    regulatory: "Ministry of Health and Welfare / Korean Psychological Association",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counseling Psychologist' requires Master's in Counseling Psychology + 800 supervised hours; register with KPA. ",
+                    training: "Master’s program + 800-hour practicum. ",
+                    renewal: "License renewal every 3 years with 36 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' title protected; requires Master's in Psychology + KPA certification exam. ",
+                    training: "2,000 supervised hours; pass KPA exam. ",
+                    renewal: "License renewal every 3 years; 36 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
+                    training: "Residency in hospital with 2,500 hours supervised. ",
+                    renewal: "Every 3 years; 36 CE hours."
+                    },
+                    notes: "Telehealth allowed since 2018 under MOHW guidelines; cross-provincial practice permitted if licensed. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need KPA certification and local license exam; Korean proficiency (TOPIK Level 5). ",
+                    outbound: "Korean psychologists can practice in EU/US under local license; no mutual recognition."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Singapore": {
+                    name: "Singapore",
+                    flag: "🇸🇬",
+                    region: "Asia",
+                    regulatory: "Singapore Psychological Society / Allied Health Professions Council (AHPC)",
+                    colorCode: "green",
+                    counselling: {
+                    regulated: false,
+                    requirements: "'Counsellor' not regulated; 'Registered Counsellor' title recognized by Singapore Association for Counselling (SAC). ",
+                    training: "Master’s in Counselling or Psychology; 500 supervised practicum hours. ",
+                    renewal: "SAC membership renewal annually; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' title regulated by AHPC; Master's in Psychology + 2-year supervised practice. ",
+                    training: "Master’s + 2-year practicum (1,500 hours). ",
+                    renewal: "AHPC renewal biennially; 30 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Master’s in Clinical Psychology from MCI or APA-accredited program + 2-year supervised practice. ",
+                    training: "Residency in recognized hospital; 2,500 supervised hours. ",
+                    renewal: "Biennial renewal; 40 CME hours."
+                    },
+                    notes: "Telehealth allowed since 2020 under MOH guidelines; must register tele-practice under AHPC. ",
+                    crossBorder: {
+                    inbound: "Foreign clinicians must obtain AHPC registration; degree must be accredited by Singapore Education Standard. ",
+                    outbound: "Singapore-registered psychologists can practice in Brunei under reciprocal agreement; outside region, local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Malaysia": {
+                    name: "Malaysia",
+                    flag: "🇲🇾",
+                    region: "Asia",
+                    regulatory: "Malaysian Board of Counsellors / Malaysian Psychology Board",   
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counsellor' requires Bachelor's + Master's in Counselling recognized by Lembaga Kaunselor Malaysia. ",
+                    training: "Supervised practicum of 800 hours; pass Lembaga Kaunselor certification. ",
+                    renewal: "Annual license renewal; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Master's in Psychology + Malaysian Psychology Board registration. ",
+                    training: "1,000 supervised hours; pass board exam. ",
+                    renewal: "Biennial renewal; 30 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Doctorate in Clinical Psychology + 2-year supervised placement. ",
+                    training: "2,000 supervised hours; Must be RPP or MBBS for psychiatrists. ",
+                    renewal: "Biennial; 40 CE hours."
+                    },
+                    notes: "Telehealth allowed under MOH telemedicine guidelines since 2020; data localization required for patient records. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need MOE degree equivalence and board registration; local language proficiency (Bahasa Melayu). ",
+                    outbound: "Malaysian-registered clinicians can practice in Singapore under MOU; outside region, local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "South Africa": {
+                    name: "South Africa",
+                    flag: "🇿🇦",
+                    region: "Africa",
+                    regulatory: "Health Professions Council of South Africa (HPCSA)",
+                    colorCode: "green",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counselor' must register as 'Registered Counsellor' under Professional Board for Psychology. Requires Master's in Counselling + 1-year internship. ",
+                    training: "Master’s + 600 supervised hours + HPCSA exam. ",
+                    renewal: "Annual; 20 CE credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Master’s or Doctorate + HPCSA registration. ",
+                    training: "Master’s (minimum 2 years) including 1-year internship; pass HPCSA professional board exam. ",
+                    renewal: "Annual; 30 CE credits."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Professional Master’s in Clinical Psychology (5-year program) + 1-year internship. ",
+                    training: "Master’s + 1-year internship under supervision; 1,000 supervised clinical hours. ",
+                    renewal: "Annual; 50 CE credits."
+                    },
+                    notes: "Telepsychology allowed under HPCSA guidelines; cross-provincial practice permitted as long as registered in SA. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists require HPCSA evaluation of credentials and board exam. ",
+                    outbound: "SA-registered psychologists can practice in SADC region under mutual recognition in some countries; elsewhere need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Nigeria": {
+                    name: "Nigeria",
+                    flag: "🇳🇬",
+                    region: "Africa",
+                    regulatory: "Psychological Society of Nigeria (PSN) / Nigerian Association of Clinical Psychologists (NACP)",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counsellor' requires Bachelor’s in Counselling Psychology + PSN registration; no specific national exam. ",
+                    training: "Undergraduate program + 500 supervised hours. ",
+                    renewal: "Annual; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Bachelor’s + Master’s in Psychology + PSN registration. ",
+                    training: "Master’s program + 1-year internship; PSN exam optional. ",
+                    renewal: "Annual; 20 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Master’s or PhD in Clinical Psychology + NACP registration. ",
+                    training: "2-year postgraduate clinical training; supervised internships. ",
+                    renewal: "Annual; 30 CE hours."
+                    },
+                    notes: "Telepsychology not explicitly regulated; remote services discouraged. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists must register with PSN; no formal credential exam. ",
+                    outbound: "Nigerian psychologists can practice in Anglophone West African countries under bilateral MOUs; others need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Kenya": {
+                    name: "Kenya",
+                    flag: "🇰🇪",
+                    region: "Africa",
+                    regulatory: "Kenya Psychological Association (KPA) / Clinical Officers Council",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Counsellor' requires Bachelor’s in Psychology or Counselling + KPA membership. ",
+                    training: "Undergraduate + 600 supervised hours. ",
+                    renewal: "Biennial; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Master’s in Psychology + KPA membership and clinical registration if working in clinical settings. ",
+                    training: "Master’s + 1-year internship; KPA exam. ",
+                    renewal: "Biennial; 30 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
+                    training: "2,000 supervised hours; Clinical Officers Council licensure. ",
+                    renewal: "Biennial; 40 CE hours."
+                    },
+                    notes: "Telehealth permitted under Ministry of Health guidelines; must register with Clinical Officers Council. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need KPA membership; degree equivalence through Kenyatta University. ",
+                    outbound: "Kenyan psychologists can practice in EAC countries if KPA registered; outside region need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Egypt": {
+                    name: "Egypt",
+                    flag: "🇪🇬",
+                    region: "Africa",
+                    regulatory: "Egyptian Psychiatrists Syndicate / Ministry of Health",
+                    colorCode: "red",
+                    counselling: {
+                    regulated: true,
+                    requirements: "'Psychological Counselor' requires Bachelor’s in Psychology + Ministry of Health license. ",
+                    training: "Undergraduate + 300 supervised hours. ",
+                    renewal: "Annual; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires Master’s in Psychology + Ministry of Health certification. ",
+                    training: "Master’s + 1-year internship. ",
+                    renewal: "Annual; 30 CE hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Master’s or PhD in Clinical Psychology + Ministry of Health exam. ",
+                    training: "2-year supervised clinical training in approved hospital. ",
+                    renewal: "Annual; 50 CE hours."
+                    },
+                    notes: "Telepsychology allowed under MOH guidelines since 2021; data localization for patient info mandated. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need degree validation from Al-Azhar or Ain Shams University; MOH exam. ",
+                    outbound: "Egyptian psychologists can practice in GCC under bilateral agreements; outside region need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Australia": {
+                    name: "Australia",
+                    flag: "🇦🇺",
+                    region: "ANZ",
+                    regulatory: "Australian Health Practitioner Regulation Agency (AHPRA) / Psychology Board of Australia",
+                    colorCode: "green",
+                    counselling: {
+                    regulated: false,
+                    requirements: "'Counsellor' not a protected title; use of 'Registered Counsellor' restricted to those registered with Australian Counselling Association (ACA). ",
+                    training: "Diploma or Bachelor in Counselling; no mandatory registration. ",
+                    renewal: "ACA membership renewal annually; 20 CE hours."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'General Psychologist' requires APAC-accredited 4-year degree + Master's (2 years) + 1-year internship. ",
+                    training: "4-year Bachelor of Psychology (Honours) + Master's or Doctorate + 1,500 supervised internship hours. ",
+                    renewal: "Annual registration with AHPRA; 30 CPD hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires APAC-accredited 4-year degree + 2-year Master's + 2-year clinical internship. ",
+                    training: "APAC-accredited Doctor of Psychology (Clin) or Master's + 2-year internship (3,000 supervised hours). ",
+                    renewal: "Annual; 30 CPD hours with at least 20 hours in clinical psychology domain."
+                    },
+                    notes: "Telehealth permitted under Medicare since 2020; must be registered through AHPRA. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists must apply for AHPRA registration via area of need or general registration; must meet English language requirements. ",
+                    outbound: "Australian psychologists can practice in New Zealand under Trans-Tasman Mutual Recognition Arrangement; outside region need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "New Zealand": {
+                    name: "New Zealand",
+                    flag: "🇳🇿",
+                    region: "ANZ",
+                    regulatory: "Psychotherapists Board of Aotearoa New Zealand / New Zealand Psychologists Board",
+                    colorCode: "green",
+                    counselling: {
+                    regulated: false,
+                    requirements: "'Counsellor' not regulated; voluntary registration with New Zealand Association of Counsellors (NZAC). ",
+                    training: "Bachelor or postgraduate diploma in Counselling; 400 supervised hours. ",
+                    renewal: "NZAC membership renewal annually; 20 CE credits."
+                    },
+                    psychology: {
+                    regulated: true,
+                    requirements: "'Psychologist' requires 4-year undergraduate + Master's in Psychology + registration with NZ Psychologists Board. ",
+                    training: "1,500 supervised practice hours post-degree. ",
+                    renewal: "Annual; 30 CPD hours."
+                    },
+                    clinical: {
+                    regulated: true,
+                    requirements: "'Clinical Psychologist' requires Postgraduate Diploma in Clinical Psychology + 2-year supervised internship. ",
+                    training: "2-year internship; 2,500 supervised hours. ",
+                    renewal: "Annual; 40 CPD hours."
+                    },
+                    notes: "Telehealth permitted under Telehealth Services Framework; must notify NZ Psychologists Board. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists can register with NZPB if qualification from APAC-accredited program; must meet English language requirements. ",
+                    outbound: "NZ psychologists can practice in Australia under Trans-Tasman MRA; outside region need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Fiji": {
+                    name: "Fiji",
+                    flag: "🇫🇯",
+                    region: "Pacific Islands",
+                    regulatory: "No formal national board; use Australian or New Zealand qualifications through Fiji Government Health Registration. ",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No formal licensing; must register with Fiji Ministry of Health using Australian/NZ credentials. ",
+                    training: "No local programs; overseas qualification required. ",
+                    renewal: "Annual re-registration; demonstration of ongoing CPD."
+                    },
+                    psychology: {
+                    regulated: false,
+                    requirements: "No local board; overseas qualifications recognized with attestation. ",
+                    training: "Same as counselling; overseas degrees only. ",
+                    renewal: "Annual; proof of CE from recognized body."
+                    },
+                    clinical: {
+                    regulated: false,
+                    requirements: "No local clinical psychology training; rely on overseas registration. ",
+                    training: "N/A (overseas only). ",
+                    renewal: "Annual; CE required."
+                    },
+                    notes: "Telehealth allowed but no local telepsychology guidelines; governed by general Health Act. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists must hold valid Australian/NZ registration; Fiji MOH approval. ",
+                    outbound: "Fijian practitioners travel to Australia/NZ under reciprocal recognition; outside region must register locally."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Samoa": {
+                    name: "Samoa",
+                    flag: "🇼🇸",
+                    region: "Pacific Islands",
+                    regulatory: "No formal national board; Samoa Nursing and Medical Registration Board oversees allied fields. ",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No formal license; overseas qualifications required, typically Australian/NZ credentials. ",
+                    training: "No local programs. ",
+                    renewal: "Annual MOH registration with evidence of CE."
+                    },
+                    psychology: {
+                    regulated: false,
+                    requirements: "No formal registration; overseas credentials recognized. ",
+                    training: "N/A local. ",
+                    renewal: "Annual; proof of CE."
+                    },
+                    clinical: {
+                    regulated: false,
+                    requirements: "No local clinical psychology training; rely entirely on overseas credentials. ",
+                    training: "N/A. ",
+                    renewal: "Annual; CPD evidence."
+                    },
+                    notes: "Telehealth use increasing but no specific guidelines; general health act applies. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists must register with Samoa Nursing and Medical Board using overseas license. ",
+                    outbound: "Samoan practitioners typically train in Australia/NZ; practice there under local licenses; elsewhere require local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Tonga": {
+                    name: "Tonga",
+                    flag: "🇹🇴",
+                    region: "Pacific Islands",
+                    regulatory: "No national board; Ministry of Health gives ad hoc approvals. ",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No formal licensure; overseas credentials required. ",
+                    training: "N/A local. ",
+                    renewal: "Annual MOH renewal with CPD proof."
+                    },
+                    psychology: {
+                    regulated: false,
+                    requirements: "No local board; Australian/NZ qualifications recognized.",
+                    training: "N/A local. ",
+                    renewal: "Annual; evidence of CE."
+                    },
+                    clinical: {
+                    regulated: false,
+                    requirements: "No local training; overseas credentials only. ",
+                    training: "N/A. ",
+                    renewal: "Annual; CPD evidence."
+                    },
+                    notes: "Telehealth allowed informally; no written guidelines. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need MOH approval; must hold overseas license. ",
+                    outbound: "Tongan practitioners practice in Australia/NZ with local license; elsewhere need local registration."
+                    },
+                    updated: "2024-06-04"
+                },
+                "Vanuatu": {
+                    name: "Vanuatu",
+                    flag: "🇻🇺",
+                    region: "Pacific Islands",
+                    regulatory: "No formal board; Ministry of Health oversight. ",
+                    colorCode: "blue",
+                    counselling: {
+                    regulated: false,
+                    requirements: "No licensing; overseas credentials used. ",
+                    training: "N/A. ",
+                    renewal: "Annual MOH registration with CE proof."
+                    },
+                    psychology: {
+                    regulated: false,
+                    requirements: "No local registration; foreign credentials required. ",
+                    training: "N/A. ",
+                    renewal: "Annual; CPD proof."
+                    },
+                    clinical: {
+                    regulated: false,
+                    requirements: "No local clinical training; overseas credentials only. ",
+                    training: "N/A. ",
+                    renewal: "Annual; CPD."
+                    },
+                    notes: "Telehealth used informally; governed by Health Practitioners Act. ",
+                    crossBorder: {
+                    inbound: "Foreign psychologists need MOH approval; valid overseas license required. ",
+                    outbound: "Vanuatu practitioners typically practice in Australia/NZ under local registration; elsewhere need local license."
+                    },
+                    updated: "2024-06-04"
+                },
+                 // --- Africa Placeholders (First 10 from user's list) ---
+                "Algeria": {
+                    name: "Algeria", flag: "🇩🇿", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Angola": {
+                    name: "Angola", flag: "🇦🇴", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Benin": {
+                    name: "Benin", flag: "🇧🇯", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Botswana": {
+                    name: "Botswana", flag: "🇧🇼", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Burkina Faso": {
+                    name: "Burkina Faso", flag: "🇧🇫", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Burundi": {
+                    name: "Burundi", flag: "🇧🇮", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Cabo Verde": {
+                    name: "Cabo Verde", flag: "🇨🇻", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Cameroon": {
+                    name: "Cameroon", flag: "🇨🇲", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Central African Republic": {
+                    name: "Central African Republic", flag: "🇨🇫", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                },
+                "Chad": {
+                    name: "Chad", flag: "🇹🇩", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
+                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
+                    notes: "Details pending from CSV.",
+                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
+                    updated: "2024-06-04"
+                }
+            },
+            generalGuidelines: [
+                "Note from Sanjeet Kaur Sidhu",
+                "\"In-house consultation services will need certification based on jurisdictional requirements).\"",
+                "", 
+                "Cross-border allowed",
+                "Meaning:",
+                "For Provider: International license is the license that permits a provider to provide services outside the country.",
+                "For Client: the client is permitted to receive services from a clinician providing services outside the country.",
+                "", 
+                "A \"regulated license\" refers to a license that is issued and enforced by a governmental or professional body within that jurisdiction. Operating without or failing to comply can result in penalties, including license revocation."
+            ]
+        };
+
+        // --- UTILITY FUNCTIONS ---
+        function getCurrentDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // --- SECTION NAVIGATION ---
+        function showSection(event, sectionId) {
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) activeSection.classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (event && event.currentTarget) {
+                 event.currentTarget.classList.add('active');
+            } else {
+                const fallbackNavItem = Array.from(document.querySelectorAll('.nav-item')).find(item => item.getAttribute('onclick').includes(sectionId));
+                if (fallbackNavItem) fallbackNavItem.classList.add('active');
+            }
+            
+            if (sectionId === 'matrix' && document.getElementById('matrixTableBody') && !document.getElementById('matrixTableBody').children.length) {
+                populateMatrix();
+            } else if (sectionId === 'countries' && document.getElementById('countriesGrid') && !document.getElementById('countriesGrid').children.length) {
+                populateCountries();
+            }
+        }
+
+        // --- COMPLIANCE ANALYSIS (CALCULATOR) & GEMINI API INTEGRATION ---
+        let currentAnalysisContext = {}; // Store context for AI explanation
+
+        async function getAIComplianceSummary() {
+            const aiSummaryDisplay = document.getElementById('aiSummaryDisplay');
+            if (!aiSummaryDisplay || !currentAnalysisContext.provider || !currentAnalysisContext.requirementsText) {
+                showNotification('Please perform an analysis first.', 'warning');
+                return;
+            }
+
+            aiSummaryDisplay.innerHTML = '<div class="loading-spinner"></div><p style="text-align:center;">✨ Generating AI explanation...</p>';
+            
+            const { provider, client, service, requirementsText, status } = currentAnalysisContext;
+
+            // MODIFIED PROMPT to ground the AI in provided data
+            const prompt = `
+                Based *only* on the "Regulatory Requirements/Notes" provided below, generate a concise and easy-to-understand explanation for the following cross-border clinical compliance scenario. Do not introduce any information not present in these notes.
+
+                Scenario Details:
+                - Provider Location: ${provider}
+                - Client Location: ${client}
+                - Service Type: ${service.replace(/-/g, ' ')}
+                - Determined Compliance Status: ${status}
+                - Regulatory Requirements/Notes: "${requirementsText}"
+
+                Your explanation should:
+                1. Summarize the key takeaways from the provided "Regulatory Requirements/Notes".
+                2. If the "Determined Compliance Status" is "Conditional" and the notes mention potential conditions, briefly outline what those conditions might be or what a user should investigate further, based *only* on the provided notes.
+                3. Be clear and actionable for a clinician or compliance officer.
+                4. Avoid verbatim repetition of the input; focus on interpretation and actionable next steps derived *solely* from the provided "Regulatory Requirements/Notes".
+            `;
+
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Provided by Canvas environment if needed for gemini-2.0-flash
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Gemini API Error:", errorData);
+                    throw new Error(`Gemini API request failed with status ${response.status}: ${errorData.error?.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+                
+                let summaryText = "Could not retrieve an AI summary at this time. Please check the detailed requirements.";
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    summaryText = result.candidates[0].content.parts[0].text;
+                } else {
+                     console.warn("Unexpected Gemini API response structure:", result);
+                }
+                
+                aiSummaryDisplay.innerHTML = `<h4>✨ AI-Powered Explanation</h4><p>${summaryText.replace(/\n/g, '<br>')}</p>`;
+
+            } catch (error) {
+                console.error('Error fetching AI summary:', error);
+                aiSummaryDisplay.innerHTML = `<h4>✨ AI-Powered Explanation</h4><p style="color: var(--danger);">Error generating explanation: ${error.message}. Please refer to the detailed notes above.</p>`;
+                showNotification('Failed to get AI explanation. ' + error.message, 'error');
+            }
+        }
+
+
+        function analyzeCompliance() {
+            const clientJurisdiction = document.getElementById('clientCountry').value;
+            const providerJurisdiction = document.getElementById('providerCountry').value;
+            const service = document.getElementById('serviceType').value;
+            
+            if (!clientJurisdiction || !providerJurisdiction || !service) {
+                showNotification('Please select all parameters', 'error');
+                return;
+            }
+            
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (!resultDisplay) return;
+            resultDisplay.classList.add('active');
+            
+            // Clear previous AI summary
+            const aiSummaryContainer = document.getElementById('aiSummaryContainer');
+            if (aiSummaryContainer) aiSummaryContainer.innerHTML = '';
+
+            resultDisplay.innerHTML = `
+                <div class="result-icon pulse">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+                        <path d="M12 2v4m0 12v4m-7-7h4m12 0h4"/>
+                        <path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M19.07 4.93l-2.83 2.83m-8.48 8.48l-2.83 2.83"/>
+                    </svg>
+                </div>
+                <div class="result-status">Analyzing Compliance...</div>
+                <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;"></div>`; // Re-add container
+            
+            setTimeout(() => {
+                const rule = findComplianceRule(providerJurisdiction, clientJurisdiction, service);
+                displayResult(rule, clientJurisdiction, providerJurisdiction, service);
+                // Store context for AI explanation
+                currentAnalysisContext = {
+                    provider: providerJurisdiction,
+                    client: clientJurisdiction,
+                    service: service,
+                    requirementsText: rule.requirements,
+                    status: rule.status
+                };
+            }, 1500);
+        }
+
+        function findComplianceRule(providerJurisdiction, clientJurisdiction, service) {
+            const providerZone = determineZone(providerJurisdiction);
+            const clientZone = determineZone(clientJurisdiction);
+            let determinedRule = null;
+
+            const colorMatrixRule = complianceData.rules.find(r =>
+                r.clientColorCode?.toLowerCase() === clientZone?.toLowerCase() &&
+                r.providerColorCode?.toLowerCase() === providerZone?.toLowerCase() &&
+                r.clientConsented === true 
+            );
+
+            if (colorMatrixRule) {
+                let status;
+                const canEnable = colorMatrixRule.canEnableCrossBorder?.toLowerCase();
+                if (canEnable === 'yes') status = 'allowed';
+                else if (canEnable === 'no') status = 'denied';
+                else status = 'conditional';
+
+                let requirementsText = colorMatrixRule.notes || 'Refer to detailed guidelines.';
+                if (colorMatrixRule.providerIntlLicenseNote && 
+                    colorMatrixRule.providerIntlLicenseNote.toLowerCase() !== 'no' && 
+                    colorMatrixRule.providerIntlLicenseNote.toLowerCase() !== 'yes' &&
+                    colorMatrixRule.providerIntlLicenseNote.trim() !== '') {
+                     requirementsText = `Provider International License Note: ${colorMatrixRule.providerIntlLicenseNote}\n\n${requirementsText}`;
+                }
+
+                determinedRule = {
+                    status: status,
+                    requirements: requirementsText,
+                    colorCode: `${providerZone}-${clientZone}`, 
+                    updated: colorMatrixRule.updated || getCurrentDate()
+                };
+            } else {
+                determinedRule = {
+                    status: 'conditional',
+                    requirements: `No specific color-matrix rule found for ${providerZone} to ${clientZone}. General compliance conditions apply. Review specific regulations.`,
+                    colorCode: `${providerZone}-${clientZone}`,
+                    updated: getCurrentDate()
+                };
+            }
+            return determinedRule;
+        }
+
+
+        function determineZone(jurisdictionName) {
+            const countryData = complianceData.countries[jurisdictionName];
+            if (countryData && countryData.colorCode && countryData.colorCode !== 'varies') {
+                return countryData.colorCode;
+            }
+
+            if (complianceData.jurisdictions['United States'] && complianceData.jurisdictions['United States'].includes(jurisdictionName) && jurisdictionName !== 'United States') {
+                 const usFederalData = complianceData.countries['United States'];
+                 if (usFederalData && usFederalData.colorCode === 'varies') {
+                    return countryData?.colorCode || 'blue'; 
+                 } else if (usFederalData && usFederalData.colorCode) {
+                    return usFederalData.colorCode;
+                 }
+            }
+             if (complianceData.jurisdictions['Canada'] && complianceData.jurisdictions['Canada']?.includes(jurisdictionName) && jurisdictionName !== 'Canada') {
+                const canadaFederalData = complianceData.countries['Canada'];
+                 if (canadaFederalData && canadaFederalData.colorCode) { 
+                    return canadaFederalData.colorCode;
+                }
+            }
+            
+            const regionOfJurisdiction = Object.keys(complianceData.jurisdictions).find(region => 
+                complianceData.jurisdictions[region] && complianceData.jurisdictions[region].includes(jurisdictionName)
+            );
+
+            if (regionOfJurisdiction) {
+                if (['ANZ', 'Latin America'].includes(regionOfJurisdiction)) return 'green'; 
+                if (['Middle East'].includes(regionOfJurisdiction)) return 'red';
+                if (['Europe', 'Asia', 'Africa', 'Pacific Islands'].includes(regionOfJurisdiction)) return 'blue';
+            }
+            
+            return 'blue'; 
+        }
+
+        function displayResult(rule, clientJurisdiction, providerJurisdiction, service) {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if(!resultDisplay) return;
+
+            const clientCountryInfo = complianceData.countries[clientJurisdiction] || { flag: getFlagForJurisdiction(clientJurisdiction), name: clientJurisdiction };
+            const providerCountryInfo = complianceData.countries[providerJurisdiction] || { flag: getFlagForJurisdiction(providerJurisdiction), name: providerJurisdiction };
+
+            const statusConfig = {
+                'allowed': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`, color: 'var(--success)', title: 'Service Permitted' },
+                'conditional': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`, color: 'var(--warning)', title: 'Conditionally Allowed' },
+                'denied': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`, color: 'var(--danger)', title: 'Not Permitted' }
+            };
+            
+            const config = statusConfig[rule.status] || statusConfig['conditional']; 
+            
+            let aiSummaryHTML = `<div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
+                                     <button class="ai-explain-btn" onclick="getAIComplianceSummary()">✨ Get AI Explanation</button>
+                                     <div id="aiSummaryDisplay" style="margin-top:1rem;"></div>
+                                 </div>`;
+
+
+            resultDisplay.innerHTML = `
+                <div class="result-icon">${config.icon}</div>
+                <div class="result-status" style="color: ${config.color};">${config.title}</div>
+                <div class="result-message">${(rule.requirements || 'N/A').replace(/\n/g, '<br>')}</div>
+                <div class="result-details">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span style="color: var(--text-muted);">Route</span>
+                        <span>${providerCountryInfo.flag} ${providerJurisdiction} → ${clientCountryInfo.flag} ${clientJurisdiction}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span style="color: var(--text-muted);">Service</span>
+                        <span>${service.charAt(0).toUpperCase() + service.slice(1).replace(/-/g, ' ')}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span style="color: var(--text-muted);">Compliance Zone</span>
+                        <span>${rule.colorCode ? rule.colorCode.toUpperCase() : 'VARIES'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--text-muted);">Last Updated</span>
+                        <span>${rule.updated || getCurrentDate()}</span>
+                    </div>
+                </div>
+                ${aiSummaryHTML} 
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                    ${complianceData.countries[providerJurisdiction] ? `<button class="filter-btn" onclick="showCountryDetails('${providerJurisdiction}')">View ${providerJurisdiction} Details</button>` : ''}
+                    ${complianceData.countries[clientJurisdiction] ? `<button class="filter-btn" onclick="showCountryDetails('${clientJurisdiction}')">View ${clientJurisdiction} Details</button>` : ''}
+                    ${(!complianceData.countries[providerJurisdiction] && !complianceData.countries[clientJurisdiction]) || (providerJurisdiction === clientJurisdiction && !complianceData.countries[providerJurisdiction]) ? `<button class="filter-btn" onclick="showSection(event, 'countries')">Browse Jurisdictions</button>` : ''}
+                </div>`;
+        }
+
+        // --- COMPLIANCE MATRIX ---
+        function populateMatrix() {
+            const tbody = document.getElementById('matrixTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = ''; 
+            
+            const rulesToDisplay = [...complianceData.rules]; 
+
+            rulesToDisplay.sort((a, b) => {
+                const pccCompare = (a.providerColorCode || "").localeCompare(b.providerColorCode || "");
+                if (pccCompare !== 0) return pccCompare;
+                return (a.clientColorCode || "").localeCompare(b.clientColorCode || "");
+            });
+            
+            rulesToDisplay.forEach(rule => {
+                const row = document.createElement('tr');
+                let statusDisplay = 'Conditional';
+                if (rule.canEnableCrossBorder?.toLowerCase() === 'yes') statusDisplay = 'Allowed';
+                if (rule.canEnableCrossBorder?.toLowerCase() === 'no') statusDisplay = 'Denied';
+
+                row.innerHTML = `
+                    <td>${rule.providerColorCode || 'N/A'} Zone</td>
+                    <td>${rule.clientColorCode || 'N/A'} Zone</td>
+                    <td>All Applicable</td> 
+                    <td><span class="status-pill ${statusDisplay.toLowerCase()}">${statusDisplay}</span></td>
+                    <td style="white-space: normal;">${(rule.notes || 'N/A').replace(/\n/g, '<br>')}</td>
+                    <td>${rule.updated || getCurrentDate()}</td>`;
+                tbody.appendChild(row);
+            });
+            
+            const infoRow = document.createElement('tr');
+            infoRow.innerHTML = `<td colspan="6" style="text-align: center; padding: 2rem; background: var(--darker);"><div style="color: var(--text-muted);">Displaying ${rulesToDisplay.length} color-code combination rules. Full details depend on specific jurisdictions.</div></td>`;
+            tbody.appendChild(infoRow);
+        }
+
+        // --- COUNTRY DATABASE ---
+        function populateCountries() {
+            const grid = document.getElementById('countriesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            const allDisplayableJurisdictions = [];
+            Object.values(complianceData.countries).forEach(country => { 
+                allDisplayableJurisdictions.push({
+                    name: country.name, region: country.region, hasDetailedData: true, data: country
+                });
+            });
+            
+            Object.entries(complianceData.jurisdictions).forEach(([region, regionJurisdictions]) => {
+                 if (Array.isArray(regionJurisdictions)) { 
+                    regionJurisdictions.forEach(jurisdictionName => {
+                        if (!allDisplayableJurisdictions.some(j => j.name === jurisdictionName)) {
+                            allDisplayableJurisdictions.push({ name: jurisdictionName, region: region, hasDetailedData: false, data: null });
+                        }
+                    });
+                }
+            });
+
+            allDisplayableJurisdictions.sort((a, b) => {
+                const regionCompare = (a.region || "").localeCompare(b.region || "");
+                if (regionCompare !== 0) return regionCompare;
+                return (a.name || "").localeCompare(b.name || "");
+            });
+            
+            let currentRegion = '';
+            allDisplayableJurisdictions.forEach(jurisdiction => {
+                if (jurisdiction.region !== currentRegion) {
+                    currentRegion = jurisdiction.region;
+                    const regionHeader = document.createElement('div');
+                    regionHeader.style.gridColumn = '1 / -1'; 
+                    regionHeader.style.marginTop = '2rem';
+                    regionHeader.style.marginBottom = '1rem';
+                    const regionJurisdictionCount = complianceData.jurisdictions[currentRegion] ? complianceData.jurisdictions[currentRegion].length : 0;
+                    regionHeader.innerHTML = `<h2 style="font-size: 1.75rem; font-weight: 700; color: var(--primary);">${currentRegion}<span style="font-size: 1rem; color: var(--text-muted); font-weight: 500; margin-left: 1rem;">${regionJurisdictionCount} jurisdictions</span></h2>`;
+                    grid.appendChild(regionHeader);
+                }
+                
+                const card = document.createElement('div');
+                card.className = 'country-card glass-card';
+                const countryData = jurisdiction.data; 
+
+                if (countryData) { 
+                    card.onclick = () => showCountryDetails(countryData.name);
+                    card.innerHTML = `
+                        <div class="country-header">
+                            <div class="country-flag">${countryData.flag || getFlagForJurisdiction(countryData.name)}</div>
+                            <div style="flex: 1;">
+                                <div class="country-name">${countryData.name}</div>
+                                <div class="country-meta">
+                                    <span>Regulatory: ${countryData.regulatory || 'N/A'}</span>
+                                    <span>Zone: ${countryData.colorCode ? countryData.colorCode.toUpperCase() : 'VARIES'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="country-card-body">
+                            <div style="display: grid; gap: 0.5rem; font-size: 0.875rem;">
+                                <div><span style="color: ${countryData.counselling?.regulated ? 'var(--warning)' : 'var(--success)'}; margin-right: 0.5em;">●</span> Counselling: ${countryData.counselling?.regulated ? 'Regulated' : 'Unregulated'}</div>
+                                <div><span style="color: ${countryData.psychology?.regulated ? 'var(--danger)' : 'var(--success)'}; margin-right: 0.5em;">●</span> Psychology: ${countryData.psychology?.regulated ? 'Regulated' : 'Unregulated'}</div>
+                                <div><span style="color: ${countryData.clinical?.regulated ? 'var(--danger)' : 'var(--success)'}; margin-right: 0.5em;">●</span> Clinical: ${countryData.clinical?.regulated ? 'Regulated' : 'Unregulated'}</div>
+                            </div>
+                            <div class="country-card-footer">
+                                <span>View Details</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+                            </div>
+                        </div>`;
+                } else { 
+                     const flagForBasic = getFlagForJurisdiction(jurisdiction.name);
+                    card.innerHTML = `
+                        <div class="country-header">
+                             <div class="country-flag">${flagForBasic}</div>
+                            <div style="flex: 1;">
+                                <div class="country-name">${jurisdiction.name}</div>
+                                <div class="country-meta"><span>Region: ${jurisdiction.region}</span></div>
+                            </div>
+                        </div>
+                         <div class="country-card-body">
+                            <div style="margin-top: 1rem; padding: 1rem; background: var(--darker); border-radius: 8px; text-align: center;">
+                                <p style="font-size: 0.875rem; color: var(--text-muted);">Full regulatory data pending.</p>
+                            </div>
+                            <div class="country-card-footer" style="justify-content: center; color: var(--text-muted); font-size: 0.875rem;">
+                                <span>Details in development</span>
+                            </div>
+                        </div>`;
+                }
+                grid.appendChild(card);
+            });
+
+            const summaryCard = document.createElement('div');
+            summaryCard.className = 'glass-card';
+            summaryCard.style.gridColumn = '1 / -1';
+            summaryCard.style.marginTop = '3rem';
+            summaryCard.style.background = 'var(--gradient-1)';
+            summaryCard.style.color = 'white';
+            summaryCard.innerHTML = `
+                <div style="text-align: center;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Global Coverage</h3>
+                    <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+                        <div><div id="jurisdictionCountSummary" style="font-size: 3rem; font-weight: 700;">0</div><div style="opacity: 0.9;">Total Jurisdictions</div></div>
+                        <div><div id="regionCountSummary" style="font-size: 3rem; font-weight: 700;">0</div><div style="opacity: 0.9;">Regions Covered</div></div>
+                        <div><div style="font-size: 3rem; font-weight: 700;">${complianceData.jobRoles.length}</div><div style="opacity: 0.9;">Role Types</div></div>
+                    </div>
+                </div>`;
+            grid.appendChild(summaryCard);
+            updateSummaryCounts(); 
+        }
+        
+        function updateSummaryCounts() {
+            const totalJurisdictions = Object.values(complianceData.jurisdictions).flat().length;
+            const totalRegions = Object.keys(complianceData.jurisdictions).length;
+
+            const jurCountHero = document.getElementById('jurisdictionCountHero');
+            const regCountHero = document.getElementById('regionCountHero');
+            const jurCountSummary = document.getElementById('jurisdictionCountSummary');
+            const regCountSummary = document.getElementById('regionCountSummary');
+
+            if (jurCountHero) jurCountHero.textContent = totalJurisdictions;
+            if (regCountHero) regCountHero.textContent = totalRegions;
+            if (jurCountSummary) jurCountSummary.textContent = totalJurisdictions;
+            if (regCountSummary) regCountSummary.textContent = totalRegions;
+        }
+
+
+        // --- MODAL (COUNTRY DETAILS) ---
+        function showCountryDetails(countryName) {
+            const country = complianceData.countries[countryName];
+            if (!country) {
+                showNotification('Detailed requirements for ' + countryName + ' are being updated.', 'info');
+                return;
+            }
+            
+            const modal = document.getElementById('modalOverlay');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            if (!modal || !modalTitle || !modalBody) return;
+            
+            modalTitle.innerHTML = `${country.flag || getFlagForJurisdiction(country.name)} ${country.name} - Regulatory Framework`;
+            
+            modalBody.innerHTML = `
+                <div class="requirements-grid">
+                    <div class="requirement-card">
+                        <div class="requirement-title">Counselling Services</div>
+                        <div class="requirement-content">
+                            <p><strong>Regulated:</strong> ${country.counselling?.regulated ? 'Yes' : 'No'}</p>
+                            <p><strong>Requirements:</strong> ${(country.counselling?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Training:</strong> ${(country.counselling?.training || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Renewal:</strong> ${(country.counselling?.renewal || 'N/A').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="requirement-title">Psychology Services</div>
+                        <div class="requirement-content">
+                            <p><strong>Regulated:</strong> ${country.psychology?.regulated ? 'Yes' : 'No'}</p>
+                            <p><strong>Requirements:</strong> ${(country.psychology?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Training:</strong> ${(country.psychology?.training || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Renewal:</strong> ${(country.psychology?.renewal || 'N/A').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="requirement-title">Clinical Psychology</div>
+                        <div class="requirement-content">
+                            <p><strong>Regulated:</strong> ${country.clinical?.regulated ? 'Yes' : 'No'}</p>
+                            <p><strong>Requirements:</strong> ${(country.clinical?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Training:</strong> ${(country.clinical?.training || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Renewal:</strong> ${(country.clinical?.renewal || 'N/A').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="requirement-title">Cross-Border Services</div>
+                        <div class="requirement-content">
+                            <p><strong>Inbound:</strong> ${(country.crossBorder?.inbound || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Outbound:</strong> ${(country.crossBorder?.outbound || 'N/A').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    </div>
+                    <div class="requirement-card" style="grid-column: 1/-1;">
+                        <div class="requirement-title">Additional Notes</div>
+                        <div class="requirement-content">
+                            <p>${(country.notes || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p style="margin-top: 1rem;"><strong>Primary Regulatory Body:</strong> ${country.regulatory || 'N/A'}</p>
+                            <p style="margin-top: 0.5rem;"><strong>Compliance Zone:</strong> ${country.colorCode ? country.colorCode.toUpperCase() : 'VARIES'}</p>
+                        </div>
+                    </div>
+                </div>`;
+            modal.classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (!event || event.target === event.currentTarget || event.target.closest('.modal-close')) {
+                 const modalOverlay = document.getElementById('modalOverlay');
+                 if (modalOverlay) modalOverlay.classList.remove('active');
+            }
+        }
+
+        // --- TABLE FILTERING (MATRIX) ---
+        function filterMatrix() {
+            const searchInput = document.getElementById('matrixSearch');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+            applyMatrixFilters(searchTerm);
+        }
+
+        let activeStatusFilters = [];
+        function toggleFilter(status) {
+            const btn = document.querySelector(`.filter-btn[data-filter="${status}"]`);
+            if(btn) btn.classList.toggle('active');
+            
+            activeStatusFilters = Array.from(document.querySelectorAll('.filter-btn.active')).map(b => b.dataset.filter);
+            applyMatrixFilters();
+        }
+
+        function applyMatrixFilters(searchTerm = null) {
+            const matrixSearchInput = document.getElementById('matrixSearch');
+            if (searchTerm === null && matrixSearchInput) { 
+                searchTerm = matrixSearchInput.value.toLowerCase();
+            } else if (searchTerm === null) {
+                searchTerm = ""; 
+            }
+
+            const rows = document.querySelectorAll('#matrixTableBody tr');
+            rows.forEach(row => {
+                if (row.querySelector('td[colspan="6"]')) { // Info row
+                     row.style.display = ''; 
+                     return;
+                }
+
+                const textContent = row.textContent || ""; 
+                const textMatch = searchTerm ? textContent.toLowerCase().includes(searchTerm) : true;
+                
+                let statusMatch = true;
+                if (activeStatusFilters.length > 0) {
+                    const rowStatusPill = row.querySelector('.status-pill');
+                    if (rowStatusPill) {
+                        const pillClasses = Array.from(rowStatusPill.classList);
+                        const rowStatus = pillClasses.find(cls => activeStatusFilters.includes(cls));
+                        statusMatch = !!rowStatus; 
+                    } else {
+                        statusMatch = false; 
+                    }
+                }
+                row.style.display = textMatch && statusMatch ? '' : 'none';
+            });
+        }
+
+        // --- NOTIFICATION SYSTEM ---
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            let bgColor;
+            switch(type) {
+                case 'error': bgColor = 'var(--danger)'; break;
+                case 'success': bgColor = 'var(--success)'; break;
+                default: bgColor = 'var(--primary)';
+            }
+            notification.style.cssText = `
+                position: fixed; top: 100px; right: 20px;
+                padding: 1.5rem 2rem; background: ${bgColor}; color: white;
+                border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                z-index: 3000; animation: slideInRight 0.3s ease-out; max-width: 400px;
+            `;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        const notificationAnimationStyle = document.createElement('style');
+        notificationAnimationStyle.textContent = `
+            @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        `;
+        document.head.appendChild(notificationAnimationStyle);
+        
+        function getFlagForJurisdiction(jurisdictionName) {
+            const countryData = complianceData.countries[jurisdictionName];
+            if (countryData && countryData.flag) {
+                return countryData.flag;
+            }
+            if (complianceData.jurisdictions['United States']?.includes(jurisdictionName) && complianceData.countries['United States']) {
+                return complianceData.countries['United States'].flag || '🇺🇸';
+            }
+            // Add similar logic for Canada if you add a "Canada" federal entry in complianceData.countries
+            // if (complianceData.jurisdictions['Canada']?.includes(jurisdictionName) && complianceData.countries['Canada']) {
+            //     return complianceData.countries['Canada'].flag || '🇨🇦';
+            // }
+            return '🌐'; 
+        }
+
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateJurisdictionDropdowns();
+            updateSummaryCounts();
+            const firstNavItem = document.querySelector('.nav-item');
+            if(firstNavItem) {
+                const sectionIdMatch = firstNavItem.getAttribute('onclick').match(/'([^']+)'/);
+                if (sectionIdMatch && sectionIdMatch[1]) {
+                    showSection({currentTarget: firstNavItem}, sectionIdMatch[1]);
+                }
+            }
+            document.querySelectorAll('#calculator .fade-in, #calculator .slide-up').forEach((el, i) => {
+                el.style.animationDelay = `${i * 0.1}s`;
+            });
+        });
+
+        function populateJurisdictionDropdowns() {
+            const clientSelect = document.getElementById('clientCountry');
+            const providerSelect = document.getElementById('providerCountry');
+            
+            if (!clientSelect || !providerSelect) return;
+
+            clientSelect.innerHTML = '<option value="">Select destination country/state...</option>';
+            providerSelect.innerHTML = '<option value="">Select provider country/state...</option>';
+            
+            const sortedRegions = Object.keys(complianceData.jurisdictions).sort();
+
+            sortedRegions.forEach(region => {
+                const jurisdictionsInRegion = complianceData.jurisdictions[region] ? complianceData.jurisdictions[region].slice().sort() : []; 
+
+                const clientOptgroup = document.createElement('optgroup');
+                clientOptgroup.label = region;
+                const providerOptgroup = document.createElement('optgroup');
+                providerOptgroup.label = region;
+                
+                jurisdictionsInRegion.forEach(jurisdictionName => {
+                    const flag = getFlagForJurisdiction(jurisdictionName);
+
+                    const clientOption = document.createElement('option');
+                    clientOption.value = jurisdictionName;
+                    clientOption.textContent = `${flag} ${jurisdictionName}`;
+                    clientOptgroup.appendChild(clientOption);
+                    
+                    const providerOption = document.createElement('option');
+                    providerOption.value = jurisdictionName;
+                    providerOption.textContent = `${flag} ${jurisdictionName}`;
+                    providerOptgroup.appendChild(providerOption);
+                });
+                
+                clientSelect.appendChild(clientOptgroup);
+                providerSelect.appendChild(providerOptgroup);
+            });
+        }
+    </script>
+</body>
+</html>
