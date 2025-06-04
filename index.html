@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Clinical Compliance Intelligence Platform</title>
+    <title>Intellect | Compliance Research Tool</title>
     <style>
         * {
             margin: 0;
@@ -12,9 +12,9 @@
         }
 
         :root {
-            --primary: #6366f1;
+            --primary: #2d9cdb; /* Intellect blue */
             --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
+            --secondary: #f2f2f2; /* Intellect soft gray */
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -998,6 +998,7 @@
             100% { transform: scale(1); opacity: 1; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Background -->
@@ -1136,7 +1137,6 @@
                             <p>Configure parameters and analyze to see compliance status</p>
                         </div>
                         <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
-                             {/* AI Explanation Button and Display Area will be injected here by JS */}
                         </div>
                     </div>
                 </div>
@@ -1190,6 +1190,14 @@
                         </p>
                     </div>
                 </div>
+            </section>
+
+            <!-- Matrix Section -->
+            <section id="hero" class="hero fade-in">
+                <h1>Cross-Border Compliance Tool – Powered by Intellect</h1>
+                <p style="font-style: italic; color: gray; font-size: 0.9em; margin-top: 10px;">
+                    *This is a prototype web tool built by Jerry for internal review at Intellect. Not an official release.*
+                </p>
             </section>
 
             <!-- Matrix Section -->
@@ -2341,7 +2349,7 @@
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = ""; // Provided by Canvas environment if needed for gemini-2.0-flash
+                const apiKey = "AIzaSyC8YYkX29-4WyWBKWw-Sm6Cm2dATxgvpeA"; // Gemini API key for AI-powered explanations
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
@@ -2931,5 +2939,12 @@
             });
         }
     </script>
+    <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; padding: 20px;">
+        © 2025 Intellect (Prototype by Jerry). For internal review only.
+    </footer>
+    
+    <div style="position: fixed; bottom: 10px; right: 10px; font-size: 0.85em; color: #666;">
+        Powered by Intellect
+    </div>
 </body>
 </html>
