@@ -999,6 +999,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="complianceData.js"></script>
 </head>
 <body>
     <!-- Background -->
@@ -1046,7 +1047,7 @@
                             <div style="color: var(--text-muted); font-size: 0.875rem;">Jurisdictions</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--secondary);">5</div>
+                            <div id="serviceTypeCountHero" style="font-size: 2rem; font-weight: 700; color: var(--secondary);">0</div>
                             <div style="color: var(--text-muted); font-size: 0.875rem;">Service Types</div>
                         </div>
                         <div style="text-align: center;">
@@ -1112,9 +1113,7 @@
                                     <option value="">Select service type...</option>
                                     <option value="counselling">Counselling Services</option>
                                     <option value="counselling-psychology">Counselling Psychology</option>
-                                    <option value="psychology">General Psychology Services</option>
                                     <option value="clinical">Clinical Psychology</option>
-                                    <option value="coaching">Mental Health Coaching</option>
                                 </select>
                                 <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M6 9l6 6 6-6"/>
@@ -1320,977 +1319,15 @@
             }
         });
         
-        // --- DATA STRUCTURE ---
-        const complianceData = {
-            jurisdictions: { // Populated with user-provided comprehensive list
-                "United States": ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
-                "Europe": ["Albania","Andorra","Austria","Belarus","Belgium","Bosnia and Herzegovina","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Italy","Kosovo","Latvia","Liechtenstein","Lithuania","Luxembourg","Malta","Moldova","Monaco","Montenegro","Netherlands","North Macedonia","Norway","Poland","Portugal","Romania","San Marino","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],
-                "Latin America": ["Argentina","Bolivia","Brazil","Chile","Colombia","Costa Rica","Cuba","Dominican Republic","Ecuador","El Salvador","Guatemala","Honduras","Mexico","Nicaragua","Panama","Paraguay","Peru","Puerto Rico","Uruguay","Venezuela"],
-                "Middle East": ["Afghanistan","Bahrain","Iran","Iraq","Israel","Jordan","Kuwait","Lebanon","Oman","Palestine","Qatar","Saudi Arabia","Syria","Turkey","United Arab Emirates","Yemen"],
-                "Asia": ["Afghanistan","Armenia","Azerbaijan","Bahrain","Bangladesh","Bhutan","Brunei","Cambodia","China","Georgia","Hong Kong","India","Indonesia","Japan","Kazakhstan","Kuwait","Kyrgyzstan","Laos","Macau","Malaysia","Maldives","Mongolia","Myanmar","Nepal","North Korea","Oman","Pakistan","Philippines","Qatar","Saudi Arabia","Singapore","South Korea","Sri Lanka","Taiwan","Tajikistan","Thailand","Timor-Leste","Turkmenistan","United Arab Emirates","Uzbekistan","Vietnam","Yemen"],
-                "Africa": ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo","Côte d'Ivoire","Democratic Republic of the Congo","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","Sao Tome & Principe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"],
-                "ANZ": ["Australia","New Zealand"],
-                "Pacific Islands": ["Fiji","Kiribati","Marshall Islands","Micronesia","Nauru","Palau","Papua New Guinea","Samoa","Solomon Islands","Tonga","Tuvalu","Vanuatu"]
-            },
-            jobRoles: ['Counsellor', 'Counselling Psychologist', 'Clinical Psychologist', 'Psychologist', 'Mental Health Coach'],
-            rules: [ 
-                { clientColorCode: 'Green', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: 'No', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
-                { clientColorCode: 'Green', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: 'Yes (meets local conditions)', canEnableCrossBorder: 'Yes', notes: "Inbound services–No issue here as the provider in the blue zone is only blue for Inbound services.\n\nFor outbound services: Provider from Blue zone to client in Green zone.\n1. Provider information e.g. Full name, Credentials – qualification and institute name and Licenses (if any).\n2. So the Client can choose the provider and consent to their services.\n3. Services should be limited to consultation. We will not have capacity to prescribe medication, diagnose and treat the client.\n4. If our clinician were to provide \"care treatment\" for legal/regime, activity, process, practice or any alternative wording.", updated: '2024-06-04' },
-                { clientColorCode: 'Green', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: "Even if client is in Green, provider’s country prohibits export – is this a blocker?\nInbound services–No issue here as the provider in the Red zone is only red for Inbound services.\n\nFor outbound services: Provider from Red zone to client in Green zone.\n1. Provider information e.g. Full name, Credentials – qualification and institute name and Licenses (if any).\n2. So the Client can choose the provider and consent to their services.", updated: '2024-06-04' },
-                { clientColorCode: 'Blue', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
-                { clientColorCode: 'Blue', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: 'Yes', notes: '', updated: '2024-06-04' },
-                { clientColorCode: 'Blue', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'May be, dependent on the Blue country’s compliance rules', canEnableCrossBorder: 'Yes, consult Clinical for final approval. Provider in a Blue-to-Red scenario usually requires local legal sign-off.', notes: "Yes, consult Clinical for final approval. Provider in a Blue-to-Red scenario usually requires local legal sign-off.", updated: '2024-06-04' },
-                { clientColorCode: 'Red', providerColorCode: 'Green', clientConsented: true, providerIntlLicenseNote: "No, unless the Provider has the specific country's license/qualification requirements.", canEnableCrossBorder: 'No', notes: "Inbound services–The provider in the Green zone can serve inbound.\nFor outbound services: Provider in Red zone to client in Green zone–they must hold the specific local license to practice.", updated: '2024-06-04' },
-                { clientColorCode: 'Red', providerColorCode: 'Blue', clientConsented: true, providerIntlLicenseNote: "No, unless the Provider has the specific country's license/qualification requirements.", canEnableCrossBorder: 'No', notes: "Inbound services–The provider in the Blue zone can serve inbound for consultation only.\nFor outbound services: Provider from Red to client in Blue–Provider must hold Blue-zone license or have temporary registration.", updated: '2024-06-04' },
-                { clientColorCode: 'Red', providerColorCode: 'Red', clientConsented: true, providerIntlLicenseNote: 'Yes', canEnableCrossBorder: "No, unless the Provider has \nthe specific country's license/ \nqualification requirements.", notes: "Inbound services: The provider in the Red zone is red for Inbound services. They must have the \nrequired license or qualification to practise (i.e. provide services) within the country.\n\nFor outbound services:\nOnly for those who have the specific license/specific qualification required.\n(E.g. a resident who migrates internationally can still provide online cross-border services.)", updated: '2024-06-04' }
-                // ... ALL OTHER ROWS FROM "Cross-border matching matrix.csv" WILL GO HERE
-            ],
-            countries: { // THIS IS THE SECTION UPDATED WITH USER-PROVIDED DATA
-                "Germany": {
-                    name: "Germany",
-                    flag: "🇩🇪",
-                    region: "Europe",
-                    regulatory: "BPtK / State Chambers (Länderkammern)",
-                    colorCode: "green",
-                    counselling: {
-                    regulated: false,
-                    requirements: "Non-therapeutic counselling largely unregulated. 'Heilpraktiker für Psychotherapie' license required for therapeutic practice without full psychologist/psychotherapist license.",
-                    training: "Various vocational pathways; no unified national standard for non-therapeutic counselling. Heilpraktiker requires passing an exam.",
-                    renewal: "Depends on the certification body or Heilpraktiker rules; typically annual CME credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologischer Psychotherapeut' or 'Kinder- und Jugendlichenpsychotherapeut' require Approbation (state license) with Staatsexamen.",
-                    training: "Master's in Psychology followed by 3-5 years of postgraduate psychotherapy training (Ausbildungsinstitut) with 600 hours theoretical coursework and 1,200 hours practical training.",
-                    renewal: "Continuing education mandatory as directed by the State Chamber; frequency varies by Länderkammer (approximately 20-40 hours per year)."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "Approbation as Psychologischer Psychotherapeut; must complete specialized postgraduate program in psychotherapy."
-                    ,training: "Direct-study programs (Direktstudium Psychotherapie) being implemented; until then, Master's + postgraduate training.",
-                    renewal: "State chamber requires ongoing CME; re-approval every five years through portfolio submission."
-                    },
-                    notes: "EU Professional Qualifications Directive applies for EU/EEA/Swiss nationals—automatic recognition with attestation of equivalence for non-EU. No prescriptions by psychologists; psychopharmacology reserved for medical doctors.",
-                    crossBorder: {
-                    inbound: "EU mobility rules allow qualified psychotherapists to practice with notification; non-EU applicants must pass language proficiency and equivalency exam.",
-                    outbound: "Licensed German psychotherapists can treat EU clients in Europe under PQD; outside EU, follow destination country regulations."
-                    },
-                    updated: "2024-06-04"
-                },
-                "France": {
-                    name: "France",
-                    flag: "🇫🇷",
-                    region: "Europe",
-                    regulatory: "Agence Régionale de Santé (ARS)",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "Non-psychotherapeutic counselling is unregulated. The title 'Psychothérapeute' protected for those with specific training under ARS.",
-                    training: "No mandatory training for basic counselling; psychotherapeutic training: Master's in Psychology or Psychiatry + 2 years supervised internship.",
-                    renewal: "Continuing professional development (DPC) required every three years (minimum 40 hours)."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "Licensed psychologists hold 'Titre de Psychologue' with Master 2 in Psychology and state certification.",
-                    training: "Five-year university program in Psychology (Licence + Master) including 12-month internship.",
-                    renewal: "Annual DPC credit submission."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Psychiatre' must have a medical degree + 4-year residency in psychiatry; 'Psychothérapeute' must have Master 2 in Psychology or Psychiatry + 2-year specialized psychotherapeutic training.",
-                    training: "Residency or specialized institute program, including 500 hours of supervised clinical practice.",
-                    renewal: "DPC every three years; license automatically renewed if DPC is complete."
-                    },
-                    notes: "Telehealth allowed since 2018 for psychologists and psychiatrists, with no additional licensure required; must register tele-consultations with ARS.",
-                    crossBorder: {
-                    inbound: "EU Psychologists authorized under PQD; non-EU need equivalence recognition through ARS.",
-                    outbound: "French psychologists can provide services in EU; outside EU, must verify local licensure requirements."
-                    },
-                    updated: "2024-06-04"
-                },
-                "United States": {
-                    name: "United States",
-                    flag: "🇺🇸",
-                    region: "United States",
-                    regulatory: "State Psychology Boards / PSYPACT",
-                    colorCode: "varies",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No single federal licensure; ICF certification recommended. Titles like 'Licensed Professional Counselor (LPC)' regulated by each state board.",
-                    training: "Typically Master’s in Counseling or related field; 60+ credit hours; 600+ clinical hours.",
-                    renewal: "Varies by state; common requirement is 30 CE hours biennially."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "State licensure required for 'Licensed Psychologist'; Doctoral degree (Ph.D. or Psy.D.); EPPP exam; state jurisprudence exam."
-                    ,training: "3,000–4,000 supervised practice hours under licensed psychologist; internship in APA-approved program."
-                    ,renewal: "Biennial renewal; typically 20–40 CE hours, depending on state."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "Same as 'Licensed Psychologist' plus clinical specialization; APA-accredited program recommended; independent practice requires state licensure."
-                    ,training: "Includes internship and post-doctoral supervised hours; 1,500–2,000 hours for post-doc in many states."
-                    ,renewal: "CE hours biennially (20–40 hours). Some states require supervised practice for re-licensure."
-                    },
-                    notes: "PSYPACT facilitates interstate practice for eligible psychologists; counselors regulated by LPC/LCSW boards. Telehealth permitted if clinician is licensed in client’s state or under PSYPACT."
-                    ,crossBorder: {
-                    inbound: "Foreign-trained clinicians must have doctorate from regionally accredited program; EPPP pass; credential review by state board.",
-                    outbound: "U.S. licensed psychologists can practice in PSYPACT states; outside PSYPACT or outside U.S., must hold local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Canada": { // Note: User's data places Canada in "United States" region for this list.
-                    name: "Canada",
-                    flag: "🇨🇦",
-                    region: "United States", 
-                    regulatory: "Provincial/Territorial Colleges of Psychologists (e.g., College of Psychologists of Ontario)",
-                    colorCode: "varies", 
-                    counselling: {
-                    regulated: false, 
-                    requirements: "No national licensing for counselling; 'Registered Psychotherapist' regulated in Ontario only. Elsewhere, ICF certification recommended. ",
-                    training: "Master’s in Counselling Psychology or Psychology; 60+ credit hours; supervised practicum (500+ hours).",
-                    renewal: "Varies by province; typically 30 CE hours every two years."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' title protected; requires Master’s or Doctorate in Psychology; passing provincial exams. ",
-                    training: "Master’s + 2-year supervised internship. ",
-                    renewal: "Annual renewal with minimum 20–30 CE credits."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "Additional clinical internship (e.g., 1600+ hours) depending on province; doctoral degree often required for independent practice. ",
-                    renewal: "Annual CME credits (40 hours)."
-                    },
-                    notes: "Telehealth permitted across provinces if clinician registered in province where client resides. Some provinces require notification to the client’s provincial regulator.",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must have degree validated (revalidação) by Canadian university; CFP re-registration required. ",
-                    outbound: "Canadian psychologists can practice in select CA countries under mutual recognition; outside region, local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Argentina": {
-                    name: "Argentina",
-                    flag: "🇦🇷",
-                    region: "Latin America",
-                    regulatory: "Consejo Federal de Psicología",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Psicólogo Clínico' requires licenciatura (5-year degree) + habilitación municipal. ",
-                    training: "Undergraduate program of 5 years including theoretical and practical modules; mandatory internship ~1,500 hours.",
-                    renewal: "Annual registration with the Colegio de Psicólogos; 30–40 CE hours per year."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires degree + registration with provincial Colegio. ",
-                    training: "Same as counselling; licensure exam varies by province. ",
-                    renewal: "Same as counselling: annual registration, 30-40 CE."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Master’s or PhD in Clinical Psychology + 2-year supervised placement. ",
-                    training: "Postgraduate specialization (2 years) recommended, though not strictly required. ",
-                    renewal: "Annual CE requirements; provincial board dictates."
-                    },
-                    notes: "Telehealth allowed since 2020 under emergency decree; must comply with Ley Nacional de Ejercicio Profesional. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need degree equivalence from Universidad Nacional; provincial habilitation required. ",
-                    outbound: "Argentinian psychologists can practice in MERCOSUR countries under mutual recognition; otherwise, must follow local rules. "
-                    },
-                    updated: "2024-06-04"
-                },
-                "Brazil": {
-                    name: "Brazil",
-                    flag: "🇧🇷",
-                    region: "Latin America",
-                    regulatory: "Conselho Federal de Psicologia (CFP)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Psicólogo' requires bachelor's degree in Psychology (5 years) + CFP registration.",
-                    training: "Undergraduation including mandatory supervised internship of 2,400 hours. ",
-                    renewal: "Biennial re-registration; 180 CE hours every two years."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' title protected under RCI; Master's in Psychology + RCI license exam. ",
-                    training: "Master’s with 2-year supervised internship. ",
-                    renewal: "Biennial; 180 CE."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "Postgraduate lato sensu or stricto sensu program, including supervised clinical rotations. ",
-                    renewal: "Biennial renewal; 180 CE hours."
-                    },
-                    notes: "Telepsychology regulated since 2018 under CFP normative resolution; can only provide to Brazilian residents. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must have degree validated (revalidação) by Brazilian university; CFP re-registration required. ",
-                    outbound: "Brazilian psychologists can practice in MERCOSUR under mutual agreement; outside needs local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Chile": {
-                    name: "Chile",
-                    flag: "🇨🇱",
-                    region: "Latin America",
-                    regulatory: "Colegio de Psicólogos de Chile",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counseling Psychologist' requires Master's in Counseling Psychology recognized by Colegio de Psicólogos. ",
-                    training: "Master’s program + 800-hour practicum. ",
-                    renewal: "Annual registration; 20 CE hours every year."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s in Psychology + registration with Colegio de Psicólogos. ",
-                    training: "Master’s program + 1-year internship. ",
-                    renewal: "Annual; 20 CE."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised internship. ",
-                    training: "Residency in hospital with 2,000 hours supervised. ",
-                    renewal: "Annual; 20 CE hours."
-                    },
-                    notes: "Telehealth allowed since 2021 under Ministry of Health guidance; consent mandatory. ",
-                    crossBorder: {
-                    inbound: "Foreign professionals need degree validation via CONESUP; Colegio de Psicólogos re-registration required. ",
-                    outbound: "Chilean psychologists can practice in select MERCOSUR countries; outside region, follow local regulations."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Colombia": {
-                    name: "Colombia",
-                    flag: "🇨🇴",
-                    region: "Latin America",
-                    regulatory: "Departamento Administrativo de Ciencia, Tecnología e Innovación (COLCIENCIAS)",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counselor' requires Professional degree in Psychology (5 years) + registration with Ministerio de Salud y Protección Social. ",
-                    training: "Internship of 1,600 hours. ",
-                    renewal: "Annual renewal; 30 CE hours every two years."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s in Psychology + registration with Ministerio de Salud y Protección Social. ",
-                    training: "Master’s + 1-year internship. ",
-                    renewal: "Annual; 30 CE per biennium."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "Residency-like program with 2,000 supervised hours. ",
-                    renewal: "Annual CME credits (40 hours)."
-                    },
-                    notes: "Telehealth regulated under resolution 2654 of 2019; psychologists can provide online services with prior registration to Ministerio de Salud. ",
-                    crossBorder: {
-                    inbound: "Foreign professionals need degree validation through Ministerio de Educación; license from Ministerio de Salud. ",
-                    outbound: "Colombian psychologists can practice in select CA countries under mutual recognition; outside region, local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "United Arab Emirates": {
-                    name: "United Arab Emirates",
-                    flag: "🇦🇪",
-                    region: "Middle East",
-                    regulatory: "Ministry of Health & Prevention (MOHAP) / Dubai Health Authority (DHA)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Licensed Counsellor' requires Master's in Counselling Psychology + DHA/MOHAP license. ",
-                    training: "2 years supervised clinical experience; 500 hours supervised practicum. ",
-                    renewal: "Annual license renewal with 30 CME hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Licensed Psychologist' requires Master’s in Clinical Psychology + 1-year supervised clinical internship under licensed psychologist. ",
-                    training: "Minimum 2,000 hours supervised practice. ",
-                    renewal: "Annual; 40 CME hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' must hold a Doctorate in Clinical Psychology or Master’s + 2-year residency. ",
-                    training: "3,000 supervised hours including internship in accredited hospital/clinic. ",
-                    renewal: "Annual license renewal; 50 CME hours."
-                    },
-                    notes: "Foreign degrees recognized if accredited by Ministry of Education; must pass DHA/MOHAP equivalency exam. Telehealth allowed if licensed in UAE and registered on Abu Dhabi, Dubai, or other emirate portal. ",
-                    crossBorder: {
-                    inbound: "Foreign providers must obtain local license; telehealth permitted only if clinician present in UAE at time of service. ",
-                    outbound: "UAE-licensed clinicians cannot provide services outside UAE unless licensed in that jurisdiction."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Saudi Arabia": {
-                    name: "Saudi Arabia",
-                    flag: "🇸🇦",
-                    region: "Middle East",
-                    regulatory: "Saudi Commission for Health Specialties (SCFHS)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Licensed Counsellor' requires Master’s in Counseling or Clinical Psychology + 1,000 supervised clinical hours. ",
-                    training: "Supervised practicum of 1,000 hours; SCFHS exam. ",
-                    renewal: "Biannual renewal with 30 CME hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' title protected; requires Master’s in Psychology + SCFHS license exam. ",
-                    training: "2,000 supervised hours post-degree. ",
-                    renewal: "Biannual; 40 CME hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "3,000 supervised clinical hours including hospital rotations. ",
-                    renewal: "Biannual renewal; 50 CME hours."
-                    },
-                    notes: "Foreign degrees require equivalency through MOH Portal and SCFHS; telehealth restricted to licensed professionals in KSA; no cross-border telepsychology. ",
-                    crossBorder: {
-                    inbound: "Foreign clinicians cannot practice remotely; must be physically present and licensed. ",
-                    outbound: "Saudi clinicians cannot provide remote services outside KSA without local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Israel": {
-                    name: "Israel",
-                    flag: "🇮🇱",
-                    region: "Middle East",
-                    regulatory: "Israel Ministry of Health / Israeli Association of Psychologists",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Licensed Counsellor' requires Master's in Counseling Psychology recognized by Council for Higher Education. ",
-                    training: "300 supervised practicum hours; 1,200 supervised clinical hours. ",
-                    renewal: "Annual license renewal; 30 CME credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s in Psychology + 1,600 supervised hours; pass MOH exam. ",
-                    training: "Master’s with thesis and practicum (600 hours) + 1,000 hospital-based training hours. ",
-                    renewal: "Annual; 40 CME hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate in Clinical Psychology or Master’s + 2-year internship. ",
-                    training: "2,500 supervised clinical hours; internship in recognized institute. ",
-                    renewal: "Annual; 50 CME hours."
-                    },
-                    notes: "Telepsychology allowed since 2020; must register under MOH telehealth registry. ",
-                    crossBorder: {
-                    inbound: "EU/EFTA psychologists can practice under mutual recognition after 6-month supervised adaptation; others require MOH exam. ",
-                    outbound: "Israeli-licensed psychologists can practice in EU/EFTA under PQD; outside region need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "India": {
-                    name: "India",
-                    flag: "🇮🇳",
-                    region: "Asia",
-                    regulatory: "Rehabilitation Council of India (RCI) / National Clinical Establishment Authority (NCEA)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counselor' not a protected title; 'Clinical Psychologist' regulated by RCI under Mental Healthcare Act, 2017. ",
-                    training: "Master’s in Psychology + 1-year RCI-recognized internship (1,500 hours). ",
-                    renewal: "RCI registration renewal every 5 years with 40 CE credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' title protected under RCI; Master's in Psychology + RCI license exam. ",
-                    training: "Master’s with 2-year supervised internship. ",
-                    renewal: "RCI renewal every 5 years; minimum 40 CE credits."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires M.Phil in Clinical Psychology from RCI-recognized institute or PhD in Clinical Psychology. ",
-                    training: "2-year M.Phil program includes 4,000 supervised clinical hours. ",
-                    renewal: "RCI renewal every 5 years; 50 CE credits."
-                    },
-                    notes: "Telepsychology allowed under telemedicine guidelines 2020; registered professionals only. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists cannot practice without RCI registration; diploma/degree must be recognized via equivalence by University Grants Commission (UGC). ",
-                    outbound: "Indian psychologists can practice in India only; outside India must meet local licensure."
-                    },
-                    updated: "2024-06-04"
-                },
-                "China": {
-                    name: "China",
-                    flag: "🇨🇳",
-                    region: "Asia",
-                    regulatory: "Ministry of Health / Chinese Psychological Society (CPS)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "No unified national licensing for counsellors; 'Counseling Psychologist' certification under CPS. ",
-                    training: "Master's in Psychology + 500 supervised clinical hours; pass CPS certification exam. ",
-                    renewal: "Re-certification every 5 years with 60 CE credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' not protected; however, 'Clinical Psychologist' requires mental health practitioner license under National Health Commission. ",
-                    training: "Doctorate or Master's + 1-year residency in psychiatric hospital. ",
-                    renewal: "License renewal every 5 years; 50 CE credits."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires clinical psychology training + National Licensed Clinical Psychologist exam. ",
-                    training: "2-year residency program in recognized psychiatric institution. ",
-                    renewal: "License renewal every 5 years; 60 CE credits."
-                    },
-                    notes: "Telehealth permitted under National Health Commission guidelines; Cross-provincial practice allowed if licensed in home province; new regulations in 2023 require data localization. ",
-                    crossBorder: {
-                    inbound: "Foreign clinicians cannot provide clinical services without Chinese license; counselling via telehealth not explicitly regulated but discouraged. ",
-                    outbound: "Chinese psychologists can provide telehealth to Hong Kong/Macau with local registration; outside China prohibited without license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Japan": {
-                    name: "Japan",
-                    flag: "🇯🇵",
-                    region: "Asia",
-                    regulatory: "Ministry of Health, Labour and Welfare / Japanese Certified Clinical Psychologist Association",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No national licensure for counsellors; voluntary certification by Japan Association of Counseling. ",
-                    training: "Master’s in Counseling; 200 hours practicum. ",
-                    renewal: "Certification renewal every 5 years with 30 CE credits."
-                    },
-                    psychology: {
-                    regulated: false,
-                    requirements: "'Psychologist' not protected; 'Psychologist' certification via Japanese Psychological Association (JPA) voluntary. ",
-                    training: "Master’s program + practicum. ",
-                    renewal: "Voluntary re-certification every 5 years."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Psychiatrist' is medical doctor; 'Certified Clinical Psychologist' requires Master's in Clinical Psychology + 5-year supervised training. ",
-                    training: "5-year clinical psychology training including 2,000 hours supervised practice. ",
-                    renewal: "Renewal every 5 years with 50 CE credits."
-                    },
-                    notes: "Telepsychology permitted since 2016 under MHLW guidelines; no cross-prefecture restrictions if certified. ",
-                    crossBorder: {
-                    inbound: "Foreign clinical psychologists must pass Japanese National Exam for Clinical Psychologists; language proficiency (JLPT N1). ",
-                    outbound: "Japanese psychologists can practice in EU/US under local licensure; no automatic recognition."
-                    },
-                    updated: "2024-06-04"
-                },
-                "South Korea": {
-                    name: "South Korea",
-                    flag: "🇰🇷",
-                    region: "Asia",
-                    regulatory: "Ministry of Health and Welfare / Korean Psychological Association",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counseling Psychologist' requires Master's in Counseling Psychology + 800 supervised hours; register with KPA. ",
-                    training: "Master’s program + 800-hour practicum. ",
-                    renewal: "License renewal every 3 years with 36 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master's in Psychology + KPA certification exam. ",
-                    training: "2,000 supervised hours; pass KPA exam. ",
-                    renewal: "License renewal every 3 years; 36 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "Residency in hospital with 2,500 hours supervised. ",
-                    renewal: "Every 3 years; 36 CE hours."
-                    },
-                    notes: "Telehealth allowed since 2018 under MOHW guidelines; cross-provincial practice permitted if licensed. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need KPA certification and local license exam; Korean proficiency (TOPIK Level 5). ",
-                    outbound: "Korean psychologists can practice in EU/US under local license; no mutual recognition."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Singapore": {
-                    name: "Singapore",
-                    flag: "🇸🇬",
-                    region: "Asia",
-                    regulatory: "Singapore Psychological Society / Allied Health Professions Council (AHPC)",
-                    colorCode: "green",
-                    counselling: {
-                    regulated: false,
-                    requirements: "'Counsellor' not regulated; 'Registered Counsellor' title recognized by Singapore Association for Counselling (SAC). ",
-                    training: "Master’s in Counselling or Psychology; 500 supervised practicum hours. ",
-                    renewal: "SAC membership renewal annually; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' title regulated by AHPC; Master's in Psychology + 2-year supervised practice. ",
-                    training: "Master’s + 2-year practicum (1,500 hours). ",
-                    renewal: "AHPC renewal biennially; 30 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Master’s in Clinical Psychology from MCI or APA-accredited program + 2-year supervised practice. ",
-                    training: "Residency in recognized hospital; 2,500 supervised hours. ",
-                    renewal: "Biennial renewal; 40 CME hours."
-                    },
-                    notes: "Telehealth allowed since 2020 under MOH guidelines; must register tele-practice under AHPC. ",
-                    crossBorder: {
-                    inbound: "Foreign clinicians must obtain AHPC registration; degree must be accredited by Singapore Education Standard. ",
-                    outbound: "Singapore-registered psychologists can practice in Brunei under reciprocal agreement; outside region, local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Malaysia": {
-                    name: "Malaysia",
-                    flag: "🇲🇾",
-                    region: "Asia",
-                    regulatory: "Malaysian Board of Counsellors / Malaysian Psychology Board",   
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counsellor' requires Bachelor’s in Counselling Psychology + certification by Lembaga Kaunselor Malaysia. ",
-                    training: "Supervised practicum of 800 hours; pass Lembaga Kaunselor certification. ",
-                    renewal: "Annual license renewal; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master's in Psychology + Malaysian Psychology Board registration. ",
-                    training: "1,000 supervised hours; pass board exam. ",
-                    renewal: "Biennial renewal; 30 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate in Clinical Psychology + 2-year supervised placement. ",
-                    training: "2,000 supervised hours; Must be RPP or MBBS for psychiatrists. ",
-                    renewal: "Biennial; 40 CE hours."
-                    },
-                    notes: "Telehealth allowed under MOH telemedicine guidelines since 2020; data localization required for patient records. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need MOE degree equivalence and board registration; local language proficiency (Bahasa Melayu). ",
-                    outbound: "Malaysian-registered clinicians can practice in Singapore under MOU; outside region, local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "South Africa": {
-                    name: "South Africa",
-                    flag: "🇿🇦",
-                    region: "Africa",
-                    regulatory: "Health Professions Council of South Africa (HPCSA)",
-                    colorCode: "green",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counselor' must register as 'Registered Counsellor' under Professional Board for Psychology. Requires Master's in Counselling + 1-year internship. ",
-                    training: "Master’s + 600 supervised hours + HPCSA exam. ",
-                    renewal: "Annual; 20 CE credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s or Doctorate + HPCSA registration. ",
-                    training: "Master’s (minimum 2 years) including 1-year internship; pass HPCSA professional board exam. ",
-                    renewal: "Annual; 30 CE credits."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Professional Master’s in Clinical Psychology (5-year program) + 1-year internship. ",
-                    training: "Master’s + 1-year internship under supervision; 1,000 supervised clinical hours. ",
-                    renewal: "Annual; 50 CE credits."
-                    },
-                    notes: "Telepsychology allowed under HPCSA guidelines; cross-provincial practice permitted as long as registered in SA. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists require HPCSA evaluation of credentials and board exam. ",
-                    outbound: "SA-registered psychologists can practice in SADC region under mutual recognition in some countries; elsewhere need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Nigeria": {
-                    name: "Nigeria",
-                    flag: "🇳🇬",
-                    region: "Africa",
-                    regulatory: "Psychological Society of Nigeria (PSN) / Nigerian Association of Clinical Psychologists (NACP)",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counsellor' requires Bachelor’s in Counselling Psychology + PSN registration; no specific national exam. ",
-                    training: "Undergraduate program + 500 supervised hours. ",
-                    renewal: "Annual; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Bachelor’s + Master’s in Psychology + PSN registration. ",
-                    training: "Master’s program + 1-year internship; PSN exam optional. ",
-                    renewal: "Annual; 20 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Master’s or PhD in Clinical Psychology + NACP registration. ",
-                    training: "2-year postgraduate clinical training; supervised internships. ",
-                    renewal: "Annual; 30 CE hours."
-                    },
-                    notes: "Telepsychology not explicitly regulated; remote services discouraged. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must register with PSN; no formal credential exam. ",
-                    outbound: "Nigerian psychologists can practice in Anglophone West African countries under bilateral MOUs; others need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Kenya": {
-                    name: "Kenya",
-                    flag: "🇰🇪",
-                    region: "Africa",
-                    regulatory: "Kenya Psychological Association (KPA) / Clinical Officers Council",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Counsellor' requires Bachelor’s in Psychology or Counselling + KPA membership. ",
-                    training: "Undergraduate + 600 supervised hours. ",
-                    renewal: "Biennial; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s in Psychology + KPA membership and clinical registration if working in clinical settings. ",
-                    training: "Master’s + 1-year internship; KPA exam. ",
-                    renewal: "Biennial; 30 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Doctorate or Master’s + 2-year supervised residency. ",
-                    training: "2,000 supervised hours; Clinical Officers Council licensure. ",
-                    renewal: "Biennial; 40 CE hours."
-                    },
-                    notes: "Telehealth permitted under Ministry of Health guidelines; must register with Clinical Officers Council. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need KPA membership; degree equivalence through Kenyatta University. ",
-                    outbound: "Kenyan psychologists can practice in EAC countries if KPA registered; outside region need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Egypt": {
-                    name: "Egypt",
-                    flag: "🇪🇬",
-                    region: "Africa",
-                    regulatory: "Egyptian Psychiatrists Syndicate / Ministry of Health",
-                    colorCode: "red",
-                    counselling: {
-                    regulated: true,
-                    requirements: "'Psychological Counselor' requires Bachelor’s in Psychology + Ministry of Health license. ",
-                    training: "Undergraduate + 300 supervised hours. ",
-                    renewal: "Annual; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'Psychologist' requires Master’s in Psychology + Ministry of Health certification. ",
-                    training: "Master’s + 1-year internship. ",
-                    renewal: "Annual; 30 CE hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Master’s or PhD in Clinical Psychology + Ministry of Health exam. ",
-                    training: "2-year supervised clinical training in approved hospital. ",
-                    renewal: "Annual; 50 CE hours."
-                    },
-                    notes: "Telehealth allowed under MOH guidelines since 2021; data localization for patient info mandated. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need degree validation from Al-Azhar or Ain Shams University; MOH exam. ",
-                    outbound: "Egyptian psychologists can practice in GCC under bilateral agreements; outside region need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Australia": {
-                    name: "Australia",
-                    flag: "🇦🇺",
-                    region: "ANZ",
-                    regulatory: "Australian Health Practitioner Regulation Agency (AHPRA) / Psychology Board of Australia",
-                    colorCode: "green",
-                    counselling: {
-                    regulated: false,
-                    requirements: "'Counsellor' not a protected title; use of 'Registered Counsellor' restricted to those registered with Australian Counselling Association (ACA). ",
-                    training: "Diploma or Bachelor in Counselling; no mandatory registration. ",
-                    renewal: "ACA membership renewal annually; 20 CE hours."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requirements: "'General Psychologist' requires APAC-accredited 4-year degree + Master's (2 years) + 1-year internship. ",
-                    training: "4-year Bachelor of Psychology (Honours) + Master's or Doctorate + 1,500 supervised internship hours. ",
-                    renewal: "Annual registration with AHPRA; 30 CPD hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires APAC-accredited 4-year degree + 2-year Master's + 2-year clinical internship. ",
-                    training: "APAC-accredited Doctor of Psychology (Clin) or Master's + 2-year internship (3,000 supervised hours). ",
-                    renewal: "Annual; 30 CPD hours with at least 20 hours in clinical psychology domain."
-                    },
-                    notes: "Telehealth permitted under Medicare since 2020; must be registered through AHPRA. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must apply for AHPRA registration via area of need or general registration; must meet English language requirements. ",
-                    outbound: "Australian psychologists can practice in New Zealand under Trans-Tasman Mutual Recognition Arrangement; outside region need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "New Zealand": {
-                    name: "New Zealand",
-                    flag: "🇳🇿",
-                    region: "ANZ",
-                    regulatory: "Psychotherapists Board of Aotearoa New Zealand / New Zealand Psychologists Board",
-                    colorCode: "green",
-                    counselling: {
-                    regulated: false,
-                    requirements: "'Counsellor' not regulated; voluntary registration with New Zealand Association of Counsellors (NZAC). ",
-                    training: "Bachelor or postgraduate diploma in Counselling; 400 supervised hours. ",
-                    renewal: "NZAC membership renewal annually; 20 CE credits."
-                    },
-                    psychology: {
-                    regulated: true,
-                    requires: "'Psychologist' requires 4-year undergraduate + Master's in Psychology + registration with NZ Psychologists Board. ",
-                    training: "1,500 supervised practice hours post-degree. ",
-                    renewal: "Annual; 30 CPD hours."
-                    },
-                    clinical: {
-                    regulated: true,
-                    requirements: "'Clinical Psychologist' requires Postgraduate Diploma in Clinical Psychology + 2-year supervised internship. ",
-                    training: "2-year internship; 2,500 supervised hours. ",
-                    renewal: "Annual; 40 CPD hours."
-                    },
-                    notes: "Telehealth permitted under Telehealth Services Framework; must notify NZ Psychologists Board. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists can register with NZPB if qualification from APAC-accredited program; must meet English language requirements. ",
-                    outbound: "NZ psychologists can practice in Australia under Trans-Tasman MRA; outside region need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Fiji": {
-                    name: "Fiji",
-                    flag: "🇫🇯",
-                    region: "Pacific Islands",
-                    regulatory: "No formal national board; use Australian or New Zealand qualifications through Fiji Government Health Registration. ",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No formal licensing; must register with Fiji Ministry of Health using Australian/NZ credentials. ",
-                    training: "No local programs; overseas qualification required. ",
-                    renewal: "Annual re-registration; demonstration of ongoing CPD."
-                    },
-                    psychology: {
-                    regulated: false,
-                    requirements: "No local board; overseas qualifications recognized with attestation. ",
-                    training: "Same as counselling; overseas degrees only. ",
-                    renewal: "Annual; proof of CE from recognized body."
-                    },
-                    clinical: {
-                    regulated: false,
-                    requirements: "No local clinical psychology training; rely on overseas registration. ",
-                    training: "N/A (overseas only). ",
-                    renewal: "Annual; CE required."
-                    },
-                    notes: "Telehealth allowed but no local telepsychology guidelines; governed by general Health Act. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must hold valid Australian/NZ registration; Fiji MOH approval. ",
-                    outbound: "Fijian practitioners travel to Australia/NZ under reciprocal recognition; outside region must register locally."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Samoa": {
-                    name: "Samoa",
-                    flag: "🇼🇸",
-                    region: "Pacific Islands",
-                    regulatory: "No formal national board; Samoa Nursing and Medical Registration Board oversees allied fields. ",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No formal license; overseas qualifications required, typically Australian/NZ credentials. ",
-                    training: "No local programs. ",
-                    renewal: "Annual MOH registration with evidence of CE."
-                    },
-                    psychology: {
-                    regulated: false,
-                    requirements: "No formal registration; overseas credentials recognized. ",
-                    training: "N/A local. ",
-                    renewal: "Annual; proof of CE."
-                    },
-                    clinical: {
-                    regulated: false,
-                    requirements: "No local clinical psychology training; rely entirely on overseas credentials. ",
-                    training: "N/A. ",
-                    renewal: "Annual; CPD evidence."
-                    },
-                    notes: "Telehealth use increasing but no specific guidelines; general health act applies. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists must register with Samoa Nursing and Medical Board using overseas license. ",
-                    outbound: "Samoan practitioners typically train in Australia/NZ; practice there under local licenses; elsewhere require local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Tonga": {
-                    name: "Tonga",
-                    flag: "🇹🇴",
-                    region: "Pacific Islands",
-                    regulatory: "No national board; Ministry of Health gives ad hoc approvals. ",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No formal licensure; overseas credentials required. ",
-                    training: "N/A local. ",
-                    renewal: "Annual MOH renewal with CPD proof."
-                    },
-                    psychology: {
-                    regulated: false,
-                    requirements: "No local board; Australian/NZ qualifications recognized.",
-                    training: "N/A local. ",
-                    renewal: "Annual; evidence of CE."
-                    },
-                    clinical: {
-                    regulated: false,
-                    requirements: "No local training; overseas credentials only. ",
-                    training: "N/A. ",
-                    renewal: "Annual; CPD evidence."
-                    },
-                    notes: "Telehealth allowed informally; no written guidelines. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need MOH approval; must hold overseas license. ",
-                    outbound: "Tongan practitioners practice in Australia/NZ with local license; elsewhere need local registration."
-                    },
-                    updated: "2024-06-04"
-                },
-                "Vanuatu": {
-                    name: "Vanuatu",
-                    flag: "🇻🇺",
-                    region: "Pacific Islands",
-                    regulatory: "No formal board; Ministry of Health oversight. ",
-                    colorCode: "blue",
-                    counselling: {
-                    regulated: false,
-                    requirements: "No licensing; overseas credentials used. ",
-                    training: "N/A. ",
-                    renewal: "Annual MOH registration with CE proof."
-                    },
-                    psychology: {
-                    regulated: false,
-                    requirements: "No local registration; foreign credentials required. ",
-                    training: "N/A. ",
-                    renewal: "Annual; CPD proof."
-                    },
-                    clinical: {
-                    regulated: false,
-                    requirements: "No local clinical training; overseas credentials only. ",
-                    training: "N/A. ",
-                    renewal: "Annual; CPD."
-                    },
-                    notes: "Telehealth used informally; governed by Health Practitioners Act. ",
-                    crossBorder: {
-                    inbound: "Foreign psychologists need MOH approval; valid overseas license required. ",
-                    outbound: "Vanuatu practitioners typically practice in Australia/NZ under local registration; elsewhere need local license."
-                    },
-                    updated: "2024-06-04"
-                },
-                 // --- Africa Placeholders (First 10 from user's list) ---
-                "Algeria": {
-                    name: "Algeria", flag: "🇩🇿", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Angola": {
-                    name: "Angola", flag: "🇦🇴", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Benin": {
-                    name: "Benin", flag: "🇧🇯", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Botswana": {
-                    name: "Botswana", flag: "🇧🇼", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Burkina Faso": {
-                    name: "Burkina Faso", flag: "🇧🇫", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Burundi": {
-                    name: "Burundi", flag: "🇧🇮", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Cabo Verde": {
-                    name: "Cabo Verde", flag: "🇨🇻", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Cameroon": {
-                    name: "Cameroon", flag: "🇨🇲", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Central African Republic": {
-                    name: "Central African Republic", flag: "🇨🇫", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                },
-                "Chad": {
-                    name: "Chad", flag: "🇹🇩", region: "Africa", regulatory: "Details pending from CSV", colorCode: "blue",
-                    counselling: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    psychology: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    clinical: { regulated: false, requirements: "Details pending", training: "Details pending", renewal: "Details pending" },
-                    notes: "Details pending from CSV.",
-                    crossBorder: { inbound: "Details pending", outbound: "Details pending" },
-                    updated: "2024-06-04"
-                }
-            },
-            generalGuidelines: [
-                "Note from Sanjeet Kaur Sidhu",
-                "\"In-house consultation services will need certification based on jurisdictional requirements).\"",
-                "", 
-                "Cross-border allowed",
-                "Meaning:",
-                "For Provider: International license is the license that permits a provider to provide services outside the country.",
-                "For Client: the client is permitted to receive services from a clinician providing services outside the country.",
-                "", 
-                "A \"regulated license\" refers to a license that is issued and enforced by a governmental or professional body within that jurisdiction. Operating without or failing to comply can result in penalties, including license revocation."
-            ]
-        };
-
         // --- UTILITY FUNCTIONS ---
         function getCurrentDate() {
-            return new Date().toISOString().split('T')[0];
+    return new Date().toISOString().split('T')[0];
+}
+
+        function formatRegulatoryInfo(regulatoryText) {
+            if (!regulatoryText) return 'N/A';
+            const urlRegex = /(https?:\/\/[^\s()<>]+)/g;
+            return regulatoryText.replace(urlRegex, (url) => `<a href="${url}" target="_blank" style="color: var(--primary); text-decoration: underline;">${url}</a>`);
         }
 
         // Helper: return basic regulatory info for a jurisdiction / service
@@ -2443,8 +1480,8 @@
         }
 
         function findComplianceRule(providerJurisdiction, clientJurisdiction, service) {
-            const providerZone = determineZone(providerJurisdiction);
-            const clientZone = determineZone(clientJurisdiction);
+            const providerZone = determineZone(providerJurisdiction, service);
+            const clientZone = determineZone(clientJurisdiction, service);
             let determinedRule = null;
 
             const colorMatrixRule = complianceData.rules.find(r =>
@@ -2460,7 +1497,7 @@
                 else if (canEnable === 'no') status = 'denied';
                 else status = 'conditional';
 
-                let requirementsText = colorMatrixRule.notes || 'Refer to detailed guidelines.';
+                let requirementsText = colorMatrixRule.notes || '<a href="https://docs.google.com/spreadsheets/d/1TBDm2kx8WxqPr4bTYtKOtWdFt3DkYyHrIsCVuPBW2rQ/edit?usp=sharing" target="_blank" style="color: var(--primary); text-decoration: underline;">Refer to detailed guidelines</a>';
                 if (colorMatrixRule.providerIntlLicenseNote && 
                     colorMatrixRule.providerIntlLicenseNote.toLowerCase() !== 'no' && 
                     colorMatrixRule.providerIntlLicenseNote.toLowerCase() !== 'yes' &&
@@ -2477,39 +1514,41 @@
             } else {
                 determinedRule = {
                     status: 'conditional',
-                    requirements: `No specific color-matrix rule found for ${providerZone} to ${clientZone}. General compliance conditions apply. Review specific regulations.`,
+                    requirements: `No specific color-matrix rule found for ${providerZone} to ${clientZone}. <a href="https://docs.google.com/spreadsheets/d/1TBDm2kx8WxqPr4bTYtKOtWdFt3DkYyHrIsCVuPBW2rQ/edit?usp=sharing" target="_blank" style="color: var(--primary); text-decoration: underline;">General compliance conditions apply</a>. Review specific regulations.`,
                     colorCode: `${providerZone}-${clientZone}`,
                     updated: getCurrentDate()
                 };
             }
             return determinedRule;
         }
-
-
-        function determineZone(jurisdictionName) {
+        function determineZone(jurisdictionName, service) {
             const countryData = complianceData.countries[jurisdictionName];
-            if (countryData && countryData.colorCode) {
-                return countryData.colorCode;
-            }
-
-            if (complianceData.jurisdictions['United States'] && complianceData.jurisdictions['United States'].includes(jurisdictionName) && jurisdictionName !== 'United States') {
-                 const usFederalData = complianceData.countries['United States'];
-                 if (usFederalData && usFederalData.colorCode) {
-                    return usFederalData.colorCode;
-                 }
-                 return 'varies'; // US states vary if not explicitly defined
-            }
-             
-            if (complianceData.jurisdictions['Canada'] && complianceData.jurisdictions['Canada']?.includes(jurisdictionName) && jurisdictionName !== 'Canada') {
-                const canadaFederalData = complianceData.countries['Canada'];
-                if (canadaFederalData && canadaFederalData.colorCode) {
-                   return canadaFederalData.colorCode;
+            if (!countryData) return 'unknown';
+            
+            // Map service type to the appropriate data field
+            const serviceMapping = {
+                'counselling': 'counselling',
+                'counselling-psychology': 'counsellingPsychology',
+                'clinical': 'clinical'
+            };
+            
+            const serviceField = serviceMapping[service];
+            
+            // Check if colorCode is an object with service-specific values
+            if (countryData.colorCode && typeof countryData.colorCode === 'object') {
+                const serviceColorCode = countryData.colorCode[service] || countryData.colorCode[serviceField];
+                if (serviceColorCode) {
+                    return serviceColorCode.toLowerCase();
                 }
-                return 'varies'; // Canadian provinces vary if not explicitly defined
+                return 'varies';
             }
             
-            // If we get here, we don't have explicit color code information
-            return 'unknown'; // Don't make assumptions, mark as unknown
+            // If colorCode is a simple string, return it
+            if (countryData.colorCode && typeof countryData.colorCode === 'string') {
+                return countryData.colorCode.toLowerCase();
+            }
+            
+            return 'unknown';
         }
 
         function displayResult(rule, clientJurisdiction, providerJurisdiction, service) {
@@ -2532,7 +1571,6 @@
                                      <div id="aiSummaryDisplay" style="margin-top:1rem;"></div>
                                  </div>`;
 
-
             resultDisplay.innerHTML = `
                 <div class="result-icon">${config.icon}</div>
                 <div class="result-status" style="color: ${config.color};">${config.title}</div>
@@ -2548,9 +1586,13 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                         <span style="color: var(--text-muted);">Compliance Zone</span>
-                        <span style='text-align:right;'>${rule.colorCode.includes('unknown')
-                            ? `NO COLOR CODE – CHECK REGULATIONS:<br><span style='font-size:0.9em;color:var(--text-muted)'>Provider: ${getJurisdictionRegInfo(providerJurisdiction, service)}<br>Client: ${getJurisdictionRegInfo(clientJurisdiction, service)}</span>`
-                            : (rule.colorCode.includes('varies') ? 'VARIES BY JURISDICTION' : rule.colorCode.toUpperCase())}</span>
+                        <span style='text-align:right;'>${
+                            rule.colorCode.includes('unknown') || rule.colorCode.includes('varies')
+                                ? (rule.colorCode.includes('unknown')
+                                    ? `NO COLOR CODE – CHECK REGULATIONS:<br><span style='font-size:0.9em;color:var(--text-muted)'>Provider: ${getJurisdictionRegInfo(providerJurisdiction, service)}<br>Client: ${getJurisdictionRegInfo(clientJurisdiction, service)}</span>`
+                                    : 'VARIES BY JURISDICTION')
+                                : (typeof rule.colorCode === 'string' ? rule.colorCode.toUpperCase() : 'VARIES')
+                        }</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span style="color: var(--text-muted);">Last Updated</span>
@@ -2655,7 +1697,7 @@
                                 <div class="country-name">${countryData.name}</div>
                                 <div class="country-meta">
                                     <span>Regulatory: ${countryData.regulatory || 'N/A'}</span>
-                                    <span>Zone: ${countryData.colorCode ? countryData.colorCode.toUpperCase() : 'VARIES'}</span>
+                                    <span>Zone: ${typeof countryData.colorCode === 'string' ? countryData.colorCode.toUpperCase() : (typeof countryData.colorCode === 'object' ? 'VARIES (Service Specific)' : 'VARIES')}</span>
                                 </div>
                             </div>
                         </div>
@@ -2712,17 +1754,25 @@
         }
         
         function updateSummaryCounts() {
-            const totalJurisdictions = Object.values(complianceData.jurisdictions).flat().length;
+            // Unique countries/jurisdictions
+            const totalJurisdictions = Object.keys(complianceData.countries).length;
+            // Supported service types (always 3)
+            const totalServiceTypes = 3;
+            // Number of regions
             const totalRegions = Object.keys(complianceData.jurisdictions).length;
 
             const jurCountHero = document.getElementById('jurisdictionCountHero');
+            const serviceTypeCountHero = document.getElementById('serviceTypeCountHero');
             const regCountHero = document.getElementById('regionCountHero');
             const jurCountSummary = document.getElementById('jurisdictionCountSummary');
+            const serviceTypeCountSummary = document.getElementById('serviceTypeCountSummary');
             const regCountSummary = document.getElementById('regionCountSummary');
 
             if (jurCountHero) jurCountHero.textContent = totalJurisdictions;
+            if (serviceTypeCountHero) serviceTypeCountHero.textContent = totalServiceTypes;
             if (regCountHero) regCountHero.textContent = totalRegions;
             if (jurCountSummary) jurCountSummary.textContent = totalJurisdictions;
+            if (serviceTypeCountSummary) serviceTypeCountSummary.textContent = totalServiceTypes;
             if (regCountSummary) regCountSummary.textContent = totalRegions;
         }
 
@@ -2746,7 +1796,7 @@
             modalBody.innerHTML = `
                 <div class="requirements-grid">
                     <div class="requirement-card">
-                        <div class="requirement-title">Counselling Services</div>
+                        <div class="requirement-title">Counselling</div>
                         <div class="requirement-content">
                             <p><strong>Regulated:</strong> ${country.counselling?.regulated ? 'Yes' : 'No'}</p>
                             <p><strong>Requirements:</strong> ${(country.counselling?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
@@ -2755,12 +1805,12 @@
                         </div>
                     </div>
                     <div class="requirement-card">
-                        <div class="requirement-title">Psychology Services</div>
+                        <div class="requirement-title">Counselling Psychology</div>
                         <div class="requirement-content">
-                            <p><strong>Regulated:</strong> ${country.psychology?.regulated ? 'Yes' : 'No'}</p>
-                            <p><strong>Requirements:</strong> ${(country.psychology?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
-                            <p><strong>Training:</strong> ${(country.psychology?.training || 'N/A').replace(/\n/g, '<br>')}</p>
-                            <p><strong>Renewal:</strong> ${(country.psychology?.renewal || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Regulated:</strong> ${country['counselling-psychology']?.regulated ? 'Yes' : 'No'}</p>
+                            <p><strong>Requirements:</strong> ${(country['counselling-psychology']?.requirements || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Training:</strong> ${(country['counselling-psychology']?.training || 'N/A').replace(/\n/g, '<br>')}</p>
+                            <p><strong>Renewal:</strong> ${(country['counselling-psychology']?.renewal || 'N/A').replace(/\n/g, '<br>')}</p>
                         </div>
                     </div>
                     <div class="requirement-card">
@@ -2783,8 +1833,8 @@
                         <div class="requirement-title">Additional Notes</div>
                         <div class="requirement-content">
                             <p>${(country.notes || 'N/A').replace(/\n/g, '<br>')}</p>
-                            <p style="margin-top: 1rem;"><strong>Primary Regulatory Body:</strong> ${country.regulatory || 'N/A'}</p>
-                            <p style="margin-top: 0.5rem;"><strong>Compliance Zone:</strong> ${country.colorCode ? country.colorCode.toUpperCase() : 'VARIES'}</p>
+                            <p style="margin-top: 1rem;"><strong>Primary Regulatory Body:</strong> ${formatRegulatoryInfo(country.regulatory)}</p>
+                            <p style="margin-top: 0.5rem;"><strong>Compliance Zone:</strong> ${typeof country.colorCode === 'string' ? country.colorCode.toUpperCase() : (typeof country.colorCode === 'object' ? 'VARIES (Service Specific)' : 'VARIES')}</p>
                         </div>
                     </div>
                 </div>`;
@@ -2883,13 +1933,6 @@
             if (countryData && countryData.flag) {
                 return countryData.flag;
             }
-            if (complianceData.jurisdictions['United States']?.includes(jurisdictionName) && complianceData.countries['United States']) {
-                return complianceData.countries['United States'].flag || '🇺🇸';
-            }
-            // Add similar logic for Canada if you add a "Canada" federal entry in complianceData.countries
-            // if (complianceData.jurisdictions['Canada']?.includes(jurisdictionName) && complianceData.countries['Canada']) {
-            //     return complianceData.countries['Canada'].flag || '🇨🇦';
-            // }
             return '🌐'; 
         }
 
@@ -2909,6 +1952,17 @@
                 el.style.animationDelay = `${i * 0.1}s`;
             });
         });
+
+        function mapJobRoleToServiceType(jobRole) {
+            switch (jobRole) {
+                case 'Counsellor': return 'counselling';
+                case 'Counselling Psychologist': return 'counselling-psychology';
+                case 'Clinical Psychologist': return 'clinical';
+                default:
+                    console.warn(`Unsupported or unknown job role: ${jobRole}. This tool now supports: Counsellor, Counselling Psychologist, Clinical Psychologist.`);
+                    return 'unsupported_service'; // Or a generic term like 'pending_service'
+            }
+        }
 
         function populateJurisdictionDropdowns() {
             const clientSelect = document.getElementById('clientCountry');
