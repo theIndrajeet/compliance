@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intellect | Compliance Research Tool</title>
+    <title>iCompliance | Compliance Research Tool</title>
     <style>
         * {
             margin: 0;
@@ -155,13 +155,25 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--gradient-1);
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+        }
+
+        .logo-icon .logo-circle {
+            width: 20px;
+            height: 20px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+        }
+
+        .logo-icon .logo-bar {
+            width: 10px;
+            height: 20px;
+            background: var(--gradient-1);
+            margin-left: 10px;
         }
 
         .logo-icon::before {
@@ -1015,13 +1027,10 @@
         <div class="nav-container">
             <div class="logo">
                 <div class="logo-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                        <path d="M2 17L12 22L22 17"/>
-                        <path d="M2 12L12 17L22 12"/>
-                    </svg>
+                    <div class="logo-circle"></div>
+                    <div class="logo-bar"></div>
                 </div>
-                <span>Global Compliance</span>
+                <span>iCompliance</span>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item active" onclick="showSection(event, 'calculator')">Calculator</li>
@@ -1038,7 +1047,7 @@
             <!-- Calculator Section -->
             <section id="calculator" class="section active">
                 <div class="hero">
-                    <h1 class="fade-in">Cross-Border Compliance Intelligence</h1>
+                    <h1 class="fade-in">iCompliance Calculator</h1>
                     <p class="fade-in" style="animation-delay: 0.1s">
                         Advanced regulatory analysis across jurisdictions worldwide
                     </p>
@@ -1194,16 +1203,16 @@
 
             <!-- Matrix Section -->
             <section id="hero" class="hero fade-in">
-                <h1>Cross-Border Compliance Tool – Powered by Intellect</h1>
+                <h1>iCompliance Tool – Powered by Intellect</h1>
                 <p style="font-style: italic; color: gray; font-size: 0.9em; margin-top: 10px;">
-                    *This is a prototype web tool built by Jerry for internal review at Intellect. Not an official release.*
+                    *This is a prototype web tool developed by the Legal Team of Intellect. All rights reserved. Not an official release.*
                 </p>
             </section>
 
             <!-- Matrix Section -->
             <section id="matrix" class="section">
                 <div class="hero">
-                    <h1 class="fade-in">Global Compliance Matrix</h1>
+                    <h1 class="fade-in">iCompliance Matrix</h1>
                     <p class="fade-in" style="animation-delay: 0.1s">
                         Comprehensive cross-border permissions
                     </p>
@@ -1260,7 +1269,7 @@
             <!-- Countries Section -->
             <section id="countries" class="section">
                 <div class="hero">
-                    <h1 class="fade-in">Country Requirements Database</h1>
+                    <h1 class="fade-in">Country Database</h1>
                     <p class="fade-in" style="animation-delay: 0.1s">
                         Detailed regulatory frameworks across global regions
                     </p>
@@ -1464,7 +1473,10 @@
                     </svg>
                 </div>
                 <div class="result-status">Analyzing Compliance...</div>
-                <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;"></div>`; // Re-add container
+                <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
+                    <button class="ai-explain-btn" onclick="getAIComplianceSummary()">✨ Get AI Explanation</button>
+                    <div id="aiSummaryDisplay" style="margin-top:1rem;"></div>
+                </div>`;
             
             setTimeout(() => {
                 const rule = findComplianceRule(providerJurisdiction, clientJurisdiction, service);
@@ -1743,7 +1755,7 @@
             summaryCard.style.color = 'white';
             summaryCard.innerHTML = `
                 <div style="text-align: center;">
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Global Coverage</h3>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">iCompliance Coverage</h3>
                     <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
                         <div><div id="jurisdictionCountSummary" style="font-size: 3rem; font-weight: 700;">0</div><div style="opacity: 0.9;">Total Jurisdictions</div></div>
                         <div><div id="regionCountSummary" style="font-size: 3rem; font-weight: 700;">0</div><div style="opacity: 0.9;">Regions Covered</div></div>
@@ -2004,11 +2016,11 @@
         }
     </script>
     <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; padding: 20px;">
-        2025 Intellect (Prototype by Jerry). For internal review only.
+        2025 Intellect (Prototype by Legal Team - Intellect). All rights reserved. For internal review only.
     </footer>
     
     <div style="position: fixed; bottom: 10px; right: 10px; font-size: 0.85em; color: #666;">
-        Powered by Intellect
+        Powered by Intellect Legal Team
     </div>
 </body>
 </html>
