@@ -34,7 +34,7 @@ const complianceData = {
             "Denmark",
             "Estonia",
             "Finland",
-            "Finland",",
+            "Finland",
             "France",
             "Germany",
             "Greece",
