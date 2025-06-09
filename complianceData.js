@@ -582,7 +582,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: true,
@@ -617,7 +617,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -687,7 +687,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -757,7 +757,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1492,7 +1492,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1527,7 +1527,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1597,7 +1597,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1772,7 +1772,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1807,7 +1807,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -1842,7 +1842,7 @@ const complianceData = {
             colorCode: {
                 'counselling': 'green',
                 'counselling-psychology': 'red',
-                'clinical': 'red',
+                'clinical': 'red'
 },
             counselling: {
                 regulated: false,
@@ -2019,7 +2019,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2054,7 +2054,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2089,7 +2089,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2125,7 +2125,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2160,7 +2160,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2230,7 +2230,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2265,7 +2265,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green', // Regulated indirectly, but cross-border seems Green
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // Indirectly via psychologist licensing
@@ -2300,7 +2300,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green', // Regulated via CPP, but cross-border seems Green
         'counselling-psychology': 'green', // Regulated via CPP
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // If performing psychological counselling professionally, via CPP
@@ -2370,7 +2370,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true,
@@ -2405,7 +2405,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true,
@@ -2510,7 +2510,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green', // As Licensed Counselling Psychologist
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // Under Psychologist Act as Counselling Psychologist
@@ -2757,7 +2757,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // Indirectly
@@ -2792,7 +2792,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -2827,7 +2827,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'green',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false,
@@ -3249,7 +3249,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as practice of psychology
@@ -3284,7 +3284,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as psychological service
@@ -3319,7 +3319,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false, // nationally, but some provincial academic certification
@@ -3354,7 +3354,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: false, // as separate profession, but psychological counselling by psychologists is regulated
@@ -3389,7 +3389,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as psychological service
@@ -3424,7 +3424,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as psychological practice
@@ -3459,7 +3459,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as psychologist
@@ -3494,7 +3494,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as psychology practice
@@ -3529,7 +3529,7 @@ const complianceData = {
     colorCode: {
         'counselling': 'green',
         'counselling-psychology': 'red',
-        'clinical': 'red',
+        'clinical': 'red'
 },
     counselling: {
         regulated: true, // as practice of psychology
