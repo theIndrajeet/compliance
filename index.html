@@ -628,74 +628,7 @@
             color: white;
         }
 
-        .table-wrapper {
-            background: var(--card);
-            border-radius: 20px;
-            overflow-x: auto; /* Added for horizontal scroll on small screens */
-            position: relative;
-        }
-
-        .modern-table {
-            width: 100%;
-            min-width: 800px; /* Ensure table content doesn't wrap too aggressively */
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .modern-table th {
-            background: var(--darker);
-            padding: 1.25rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.05em;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .modern-table td {
-            padding: 1.25rem;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap; /* Prevent content wrapping in cells initially */
-        }
-        .modern-table td:nth-child(5) { /* Requirements column */
-            white-space: normal; /* Allow requirements to wrap */
-            min-width: 250px; /* Give requirements column more space */
-        }
-
-
-        .modern-table tr:hover td {
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .status-pill.allowed {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status-pill.conditional {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .status-pill.denied {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
+        /* Table styles removed */
 
         /* Country Cards */
         .countries-grid {
@@ -1033,10 +966,10 @@
                 <span>iCompliance</span>
             </div>
             <ul class="nav-menu">
-                <li class="nav-item active" onclick="showSection(event, 'calculator')">Calculator</li>
-                <li class="nav-item" onclick="showSection(event, 'matrix')">Compliance Matrix</li>
+                <li class="nav-item" onclick="showSection(event, 'calculator')">Calculator</li>
+                <li class="nav-item" onclick="window.open('./compliance-mtrix.html', '_self')">Compliance Matrix</li>
                 <li class="nav-item" onclick="showSection(event, 'countries')">Country Database</li>
-                <li class="nav-item" onclick="window.open('Cross-Border-Hiring-Assessment.html', '_blank')">Cross-Border Assessment</li>
+                <li class="nav-item" onclick="window.open('./Cross-Border-Hiring-Assessment.html', '_blank')">Cross-Border Assessment</li>
             </ul>
         </div>
     </nav>
@@ -1209,62 +1142,6 @@
                 </p>
             </section>
 
-            <!-- Matrix Section -->
-            <section id="matrix" class="section">
-                <div class="hero">
-                    <h1 class="fade-in">iCompliance Matrix</h1>
-                    <p class="fade-in" style="animation-delay: 0.1s">
-                        Comprehensive cross-border permissions
-                    </p>
-                </div>
-
-                <div class="table-controls">
-                    <div class="search-box">
-                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="m21 21-4.35-4.35"/>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search countries, regions, or regulations..." id="matrixSearch" onkeyup="filterMatrix()">
-                    </div>
-                    <button class="filter-btn" onclick="toggleFilter('allowed')" data-filter="allowed">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                        Allowed
-                    </button>
-                    <button class="filter-btn" onclick="toggleFilter('conditional')" data-filter="conditional">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                        </svg>
-                        Conditional
-                    </button>
-                    <button class="filter-btn" onclick="toggleFilter('denied')" data-filter="denied">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="15" y1="9" x2="9" y2="15"/>
-                        </svg>
-                        Not Allowed
-                    </button>
-                </div>
-
-                <div class="table-wrapper glass-card">
-                    <table class="modern-table">
-                        <thead>
-                            <tr>
-                                <th>Provider Location</th>
-                                <th>Client Location</th>
-                                <th>Service Type</th>
-                                <th>Status</th>
-                                <th>Requirements</th>
-                                <th>Last Updated</th>
-                            </tr>
-                        </thead>
-                        <tbody id="matrixTableBody">
-                            <!-- Table rows will be populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
 
             <!-- Countries Section -->
             <section id="countries" class="section">
@@ -1369,9 +1246,7 @@
                 if (fallbackNavItem) fallbackNavItem.classList.add('active');
             }
             
-            if (sectionId === 'matrix' && document.getElementById('matrixTableBody') && !document.getElementById('matrixTableBody').children.length) {
-                populateMatrix();
-            } else if (sectionId === 'countries' && document.getElementById('countriesGrid') && !document.getElementById('countriesGrid').children.length) {
+            if (sectionId === 'countries' && document.getElementById('countriesGrid') && !document.getElementById('countriesGrid').children.length) {
                 populateCountries();
             }
         }
@@ -1620,40 +1495,7 @@
                 </div>`;
         }
 
-        // --- COMPLIANCE MATRIX ---
-        function populateMatrix() {
-            const tbody = document.getElementById('matrixTableBody');
-            if (!tbody) return;
-            tbody.innerHTML = ''; 
-            
-            const rulesToDisplay = [...complianceData.rules]; 
 
-            rulesToDisplay.sort((a, b) => {
-                const pccCompare = (a.providerColorCode || "").localeCompare(b.providerColorCode || "");
-                if (pccCompare !== 0) return pccCompare;
-                return (a.clientColorCode || "").localeCompare(b.clientColorCode || "");
-            });
-            
-            rulesToDisplay.forEach(rule => {
-                const row = document.createElement('tr');
-                let statusDisplay = 'Conditional';
-                if (rule.canEnableCrossBorder?.toLowerCase() === 'yes') statusDisplay = 'Allowed';
-                if (rule.canEnableCrossBorder?.toLowerCase() === 'no') statusDisplay = 'Denied';
-
-                row.innerHTML = `
-                    <td>${rule.providerColorCode || 'N/A'} Zone</td>
-                    <td>${rule.clientColorCode || 'N/A'} Zone</td>
-                    <td>All Applicable</td> 
-                    <td><span class="status-pill ${statusDisplay.toLowerCase()}">${statusDisplay}</span></td>
-                    <td style="white-space: normal;">${(rule.notes || 'N/A').replace(/\n/g, '<br>')}</td>
-                    <td>${rule.updated || getCurrentDate()}</td>`;
-                tbody.appendChild(row);
-            });
-            
-            const infoRow = document.createElement('tr');
-            infoRow.innerHTML = `<td colspan="6" style="text-align: center; padding: 2rem; background: var(--darker);"><div style="color: var(--text-muted);">Displaying ${rulesToDisplay.length} color-code combination rules. Full details depend on specific jurisdictions.</div></td>`;
-            tbody.appendChild(infoRow);
-        }
 
         // --- COUNTRY DATABASE ---
         function populateCountries() {
@@ -1861,54 +1703,6 @@
             }
         }
 
-        // --- TABLE FILTERING (MATRIX) ---
-        function filterMatrix() {
-            const searchInput = document.getElementById('matrixSearch');
-            const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
-            applyMatrixFilters(searchTerm);
-        }
-
-        let activeStatusFilters = [];
-        function toggleFilter(status) {
-            const btn = document.querySelector(`.filter-btn[data-filter="${status}"]`);
-            if(btn) btn.classList.toggle('active');
-            
-            activeStatusFilters = Array.from(document.querySelectorAll('.filter-btn.active')).map(b => b.dataset.filter);
-            applyMatrixFilters();
-        }
-
-        function applyMatrixFilters(searchTerm = null) {
-            const matrixSearchInput = document.getElementById('matrixSearch');
-            if (searchTerm === null && matrixSearchInput) { 
-                searchTerm = matrixSearchInput.value.toLowerCase();
-            } else if (searchTerm === null) {
-                searchTerm = ""; 
-            }
-
-            const rows = document.querySelectorAll('#matrixTableBody tr');
-            rows.forEach(row => {
-                if (row.querySelector('td[colspan="6"]')) { // Info row
-                     row.style.display = ''; 
-                     return;
-                }
-
-                const textContent = row.textContent || ""; 
-                const textMatch = searchTerm ? textContent.toLowerCase().includes(searchTerm) : true;
-                
-                let statusMatch = true;
-                if (activeStatusFilters.length > 0) {
-                    const rowStatusPill = row.querySelector('.status-pill');
-                    if (rowStatusPill) {
-                        const pillClasses = Array.from(rowStatusPill.classList);
-                        const rowStatus = pillClasses.find(cls => activeStatusFilters.includes(cls));
-                        statusMatch = !!rowStatus; 
-                    } else {
-                        statusMatch = false; 
-                    }
-                }
-                row.style.display = textMatch && statusMatch ? '' : 'none';
-            });
-        }
 
         // --- NOTIFICATION SYSTEM ---
         function showNotification(message, type = 'info') {

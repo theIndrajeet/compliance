@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCompliance | Rule Matrix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <style>
+        :root {
+            --primary: #2d9cdb; /* Intellect blue */
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f0f10;
+            --darker: #050506;
+            --card: #18181b;
+            --border: #27272a;
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-ai: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .universe-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b1b2f 0%, #050506 100%);
+            overflow: hidden;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 6, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-icon .logo-circle {
+            width: 20px; height: 20px;
+            background: var(--gradient-1); border-radius: 50%;
+        }
+        .logo-icon .logo-bar {
+            width: 10px; height: 20px;
+            background: var(--gradient-1); margin-left: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-item a {
+            position: relative;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .nav-item a:hover {
+            color: var(--text);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-item a.active {
+            color: var(--text);
+            background: rgba(99, 102, 241, 0.2);
+        }
+        
+        .nav-item a.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 50%;
+            transform: translateX(-50%); width: 30px; height: 3px;
+            background: var(--primary); border-radius: 3px;
+        }
+
+        main {
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0 2rem 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .matrix-table-wrapper {
+            background: var(--card);
+            border-radius: 20px;
+            overflow-x: auto;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+        }
+
+        .matrix-table th, .matrix-table td {
+            padding: 1.5rem;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .matrix-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .matrix-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .zone-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .zone-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        .zone-dot.green { background-color: var(--success); box-shadow: 0 0 10px var(--success); }
+        .zone-dot.blue { background-color: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .zone-dot.red { background-color: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+        .status-cell {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-cell.allowed { color: var(--success); }
+        .status-cell.conditional { color: var(--warning); }
+        .status-cell.denied { color: var(--danger); }
+        
+        .notes-cell {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: normal;
+        }
+        
+        .ai-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--gradient-ai);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.25);
+        }
+        .ai-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-overlay.active {
+            display: flex; 
+            opacity: 1;
+        }
+        .modal-content {
+            background: var(--darker);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            z-index: 10;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .modal-header h2 { 
+            font-size: 1.5rem;
+            color: var(--text);
+            flex-grow: 1;
+        }
+        .modal-close {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0; 
+        }
+        .modal-close:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+            transform: rotate(90deg);
+        }
+        .modal-body {
+            padding: 2rem;
+            line-height: 1.7;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .modal-body h3 { color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .modal-body ul { list-style-position: inside; padding-left: 1rem; }
+        .modal-body li { margin-bottom: 0.5rem; }
+        .modal-body p { margin-bottom: 1rem; color: var(--text-muted); }
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            background-color: var(--dark);
+            flex-shrink: 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 3rem auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+    <div class="universe-bg"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <div class="logo-circle"></div>
+                    <div class="logo-bar"></div>
+                </div>
+                <span>iCompliance</span>
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Calculator</a></li>
+                <li class="nav-item"><a href="#" class="active">Compliance Matrix</a></li>
+                <li class="nav-item"><a href="index.html">Country Database</a></li>
+                <li class="nav-item"><a href="Cross-Border-Hiring-Assessment.html">Cross-Border Assessment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="hero">
+                <h1>Compliance Rule Matrix</h1>
+                <p>
+                    This matrix explains the core logic behind the iCompliance calculator.
+                    Permission for cross-border services is determined by a color-coded system representing the regulatory strictness of the <strong>Provider's</strong> and <strong>Client's</strong> jurisdictions.
+                </p>
+            </div>
+
+            <div class="matrix-table-wrapper">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Provider Zone</th>
+                            <th>Client Zone</th>
+                            <th>Status</th>
+                            <th>Key Conditions & Notes</th>
+                            <th style="text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrix-body">
+                        <!-- Rows will be dynamically generated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- AI Modal -->
+    <div class="modal-overlay" id="ai-modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">✨ AI-Powered Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- AI content will be injected here -->
+            </div>
+             <div class="modal-footer" id="modal-footer">
+                <!-- Scenario button will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; padding: 20px;">
+        2025 Intellect (Prototype by Legal Team - Intellect). All rights reserved. For internal review only.
+    </footer>
+
+    <script>
+        const showdownConverter = new showdown.Converter({
+            ghCompatibleHeaderId: true,
+            simpleLineBreaks: true
+        });
+
+        // --- Data for the Matrix ---
+        const matrixRules = [
+            { provider: 'Green', client: 'Green', status: 'Allowed', notes: "Standard practice is permitted with no special cross-border requirements." },
+            { provider: 'Green', client: 'Blue', status: 'Allowed', notes: "Provider can serve the client, but may need to adhere to specific conditions set by the client's (Blue) jurisdiction. Primarily for consultation." },
+            { provider: 'Green', client: 'Red', status: 'Denied', notes: "Practice is not permitted. The provider must hold a specific license for the client's highly regulated (Red) jurisdiction." },
+            { provider: 'Blue', client: 'Green', status: 'Allowed', notes: "Services are permitted as the client's jurisdiction is permissive. Services may be limited to consultation." },
+            { provider: 'Blue', client: 'Blue', status: 'Allowed', notes: "Practice is generally permitted between two moderately regulated jurisdictions." },
+            { provider: 'Blue', client: 'Red', status: 'Conditional', notes: "This is a high-risk scenario that requires consultation with the Clinical and Legal teams for final approval." },
+            { provider: 'Red', client: 'Green', status: 'Allowed', notes: "Permitted because the client is in a permissive jurisdiction. The provider must still provide full credential information." },
+            { provider: 'Red', client: 'Blue', status: 'Denied', notes: "Practice is not permitted. Provider must hold a license or temporary registration for the client's (Blue) jurisdiction." },
+            { provider: 'Red', client: 'Red', status: 'Denied', notes: "Practice is not permitted unless the provider holds a specific license for the client's highly regulated (Red) jurisdiction." }
+        ];
+
+        // --- UI Rendering ---
+        function populateMatrixTable() {
+            const tbody = document.getElementById('matrix-body');
+            tbody.innerHTML = ''; // Clear existing rows
+            
+            matrixRules.forEach(rule => {
+                const row = document.createElement('tr');
+                const statusClass = rule.status.toLowerCase();
+                const iconClass = {
+                    'Allowed': 'fa-check-circle',
+                    'Conditional': 'fa-exclamation-triangle',
+                    'Denied': 'fa-ban'
+                }[rule.status];
+
+                row.innerHTML = `
+                    <td><div class="zone-label"><span class="zone-dot ${rule.provider.toLowerCase()}"></span>${rule.provider}</div></td>
+                    <td><div class="zone-label"><span class="zone-dot ${rule.client.toLowerCase()}"></span>${rule.client}</div></td>
+                    <td><div class="status-cell ${statusClass}"><i class="fas ${iconClass}"></i>${rule.status}</div></td>
+                    <td class="notes-cell">${rule.notes}</td>
+                    <td style="text-align: center;">
+                        <button class="ai-btn explain-btn" 
+                                data-provider="${rule.provider}" 
+                                data-client="${rule.client}" 
+                                data-status="${rule.status}" 
+                                data-notes="${rule.notes}">
+                            ✨ Explain
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Add event listeners after rows are created
+            document.querySelectorAll('.explain-btn').forEach(button => {
+                button.addEventListener('click', handleExplainClick);
+            });
+        }
+
+        // --- Modal & AI Logic ---
+        function openModal() {
+            document.getElementById('ai-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('ai-modal').classList.remove('active');
+        }
+
+        function handleExplainClick(event) {
+            const button = event.currentTarget;
+            const { provider, client, status, notes } = button.dataset;
+            showRuleExplanation(provider, client, status, notes);
+        }
+        
+        async function callGeminiAPI(prompt) {
+            // This is your specific API key.
+            const apiKey = "AIzaSyC8YYkX29-4WyWBKWw-Sm6Cm2dATxgvpeA"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                const result = await response.json();
+                if (result.candidates && result.candidates[0].content.parts) {
+                    return result.candidates[0].content.parts[0].text;
+                }
+                throw new Error("Invalid response structure from API.");
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                return `<p style="color: var(--danger);">Sorry, there was an error communicating with the AI. Please try again later. This is often caused by a CORS issue when running locally. Check the console for details.</p>`;
+            }
+        }
+
+        async function showRuleExplanation(provider, client, status, notes) {
+            openModal();
+            const modalBody = document.getElementById('modal-body');
+            const modalFooter = document.getElementById('modal-footer');
+            modalBody.innerHTML = '<div class="loading-spinner"></div><p style="text-align:center;">Generating explanation...</p>';
+            modalFooter.innerHTML = '';
+
+            const prompt = `
+                Explain the following cross-border compliance rule in simple, clear terms for a non-legal audience like a recruiter.
+
+                - **Provider's Zone:** ${provider}
+                - **Client's Zone:** ${client}
+                - **Outcome:** ${status}
+                - **Reason/Notes:** ${notes}
+
+                Structure your response using Markdown:
+                1.  **Rule Summary:** A one-sentence summary of the rule.
+                2.  **Why this happens:** A simple explanation of the logic. For example, mention if it's because the client's country is strict or the provider's country is permissive.
+                3.  **Action for Recruiters:** A clear, actionable takeaway.
+            `;
+
+            const explanation = await callGeminiAPI(prompt);
+            modalBody.innerHTML = showdownConverter.makeHtml(explanation);
+            
+            // Add scenario generator button
+            modalFooter.innerHTML = `
+                <button class="ai-btn" id="scenario-btn" 
+                        data-provider="${provider}" 
+                        data-client="${client}" 
+                        data-status="${status}" 
+                        data-notes="${notes}">
+                    Generate Hypothetical Scenario
+                </button>
+            `;
+            document.getElementById('scenario-btn').addEventListener('click', handleScenarioClick);
+        }
+
+        async function handleScenarioClick(event) {
+            const button = event.currentTarget;
+            button.disabled = true;
+            button.innerHTML = '✨ Generating...';
+            
+            const { provider, client, status, notes } = button.dataset;
+            const modalBody = document.getElementById('modal-body');
+
+            const scenarioPrompt = `
+                Create a brief, practical, hypothetical case study for a healthcare recruiter to illustrate the following compliance rule:
+
+                - **Rule:** A provider from a **${provider}** zone wants to serve a client in a **${client}** zone.
+                - **Outcome:** The result is **${status}**.
+                - **Details:** ${notes}
+
+                The scenario should feature a fictional clinician and client and clearly demonstrate the real-world consequence of this rule. Keep it concise (2-3 paragraphs). Format it as a Markdown blockquote.
+            `;
+
+            const scenario = await callGeminiAPI(scenarioPrompt);
+            
+            // Append scenario to the modal body
+            const scenarioContainer = document.createElement('div');
+            scenarioContainer.innerHTML = `
+                <hr style="border-color: var(--border); margin: 2rem 0;">
+                <h3>Hypothetical Scenario</h3>
+                ${showdownConverter.makeHtml(scenario)}
+            `;
+            modalBody.appendChild(scenarioContainer);
+            
+            // Scroll to the new content
+            modalBody.scrollTop = modalBody.scrollHeight;
+            
+            button.style.display = 'none'; // Hide button after use
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', populateMatrixTable);
+    </script>
+</body>
+</html>
