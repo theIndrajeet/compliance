@@ -404,6 +404,46 @@
             color: var(--text-muted);
         }
 
+        /* Style for searchable dropdowns */
+        input[list] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            color: #1c8bf1; /* Changed from #1a202c to #1c8bf1 for better visibility */
+            font-weight: 500; /* Added font weight to make text more visible */
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input[list]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .select-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .select-wrapper input[list] {
+            padding-right: 2.5rem;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #6b7280;
+        }
+
         .calculate-btn, .ai-explain-btn { /* Shared styles for buttons */
             width: 100%;
             padding: 1.25rem;
@@ -478,6 +518,7 @@
             animation: rotate 4s linear infinite;
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none; /* Ensure clicks go through to elements below */
         }
 
         .result-display.active::before {
@@ -508,31 +549,49 @@
         }
 
         .result-message {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 400px;
-            line-height: 1.6;
-            white-space: pre-wrap; /* To respect newlines from notes */
-        }
 
-        .result-details {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--darker);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-        }
+.result-details {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--darker);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+}
         
-        #aiSummaryDisplay {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(var(--primary-rgb, 99, 102, 241), 0.05); /* Slightly different background */
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px; /* Can be wider */
-            text-align: left;
+#aiSummaryDisplay {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(var(--primary-rgb, 99, 102, 241), 0.05); /* Slightly different background */
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px; /* Can be wider */
+    text-align: left;
+    line-height: 1.7;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+#aiSummaryDisplay h4 {
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+#aiSummaryDisplay p {
+    margin-bottom: 0.5rem;
+}
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-left-color: var(--primary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin: 1rem auto;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
             line-height: 1.7;
             color: var(--text-muted);
             font-size: 0.95rem;
@@ -615,6 +674,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            z-index: 5;
         }
 
         .filter-btn:hover {
@@ -942,6 +1003,112 @@
             50% { transform: scale(1.05); opacity: 0.8; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* Microchip Animation */
+        .microchip-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .microchip {
+            width: 170px; /* Increased size */
+            height: 170px; /* Increased size */
+            color: var(--primary);
+        }
+
+        .microchip__lines {
+            stroke-width: 2.5;
+        }
+
+        .microchip__dot {
+            animation: microchipDot 4s infinite;
+        }
+
+        .microchip__line {
+            stroke-dashoffset: 0; /* Initial state for animation */
+            animation: microchipLine 4s infinite;
+        }
+
+        .microchip__spark {
+            stroke-dashoffset: 84; /* Initial state for animation, adjust if line length changes */
+            animation: microchipSpark 4s infinite;
+        }
+
+        .microchip__wave {
+            opacity: 0;
+            transform-origin: 25px 25px; /* Center of the wave symbol */
+            animation: microchipWave 4s infinite;
+        }
+
+        .microchip__wave--2 {
+            animation-delay: 0.3s;
+        }
+
+        .microchip__core {
+            transform: scale(0);
+            animation: microchipCore 4s infinite;
+            transform-origin: center; /* Ensure scaling from center */
+        }
+
+        @keyframes microchipDot {
+            0%, 5% { opacity: 0; }
+            15%, 100% { opacity: 1; }
+        }
+
+        @keyframes microchipLine {
+            0%, 10% { stroke-dashoffset: 42; } /* Start hidden */
+            30%, 100% { stroke-dashoffset: 0; } /* Fully drawn */
+        }
+
+        @keyframes microchipSpark {
+            0%, 10% { stroke-dashoffset: 84; } /* Start hidden (length of spark path * 2 for dasharray) */
+            50%, 51% { stroke-dashoffset: 0; }   /* Spark fully visible */
+            80%, 100% { stroke-dashoffset: -84; } /* Spark moved off */
+        }
+
+        @keyframes microchipWave {
+            0%, 15% { opacity: 0; transform: scale(0); }
+            20%, 40% { opacity: 1; }
+            60%, 100% { opacity: 0; transform: scale(2.5); }
+        }
+
+        @keyframes microchipCore {
+            0%, 15% { transform: scale(0); }
+            30%, 100% { transform: scale(1); }
+        }
+
+        /* Staggered animation delays for a more dynamic effect */
+        .microchip__dot--1 { animation-delay: 0.1s; }
+        .microchip__dot--2 { animation-delay: 0.2s; }
+        .microchip__dot--3 { animation-delay: 0.3s; }
+        .microchip__dot--4 { animation-delay: 0.3s; } /* Mirrored side */
+        .microchip__dot--5 { animation-delay: 0.2s; }
+        .microchip__dot--6 { animation-delay: 0.1s; }
+        .microchip__dot--7 { animation-delay: 0.1s; } /* Other axis */
+        .microchip__dot--8 { animation-delay: 0.2s; }
+        .microchip__dot--9 { animation-delay: 0.3s; }
+
+        .microchip__line--1 { animation-delay: 0.1s; }
+        .microchip__line--2 { animation-delay: 0.2s; }
+        .microchip__line--3 { animation-delay: 0.3s; }
+        .microchip__line--4 { animation-delay: 0.4s; }
+        .microchip__line--5 { animation-delay: 0.5s; }
+        .microchip__line--6 { animation-delay: 0.6s; }
+        .microchip__line--7 { animation-delay: 0.7s; }
+        .microchip__line--8 { animation-delay: 0.8s; }
+        .microchip__line--9 { animation-delay: 0.9s; }
+
+        .microchip__spark--1 { animation-delay: 0.1s; }
+        .microchip__spark--2 { animation-delay: 0.2s; }
+        .microchip__spark--3 { animation-delay: 0.3s; }
+        .microchip__spark--4 { animation-delay: 0.4s; }
+        .microchip__spark--5 { animation-delay: 0.5s; }
+        .microchip__spark--6 { animation-delay: 0.6s; }
+        .microchip__spark--7 { animation-delay: 0.7s; }
+        .microchip__spark--8 { animation-delay: 0.8s; }
+        .microchip__spark--9 { animation-delay: 0.9s; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="complianceData.js"></script>
@@ -1013,10 +1180,10 @@
                                 Client Location
                             </label>
                             <div class="select-wrapper">
-                                <select class="select-modern" id="clientCountry">
-                                    <option value="">Select destination country/state...</option>
-                                    {/* Options populated by JS */}
-                                </select>
+                                <input list="clientCountries" id="clientCountry" class="select-modern" placeholder="Type or select a country/state..." autocomplete="off">
+                                <datalist id="clientCountries">
+                                    {/* Options will be populated by JavaScript */}
+                                </datalist>
                                 <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M6 9l6 6 6-6"/>
                                 </svg>
@@ -1032,10 +1199,10 @@
                                 Provider Location
                             </label>
                             <div class="select-wrapper">
-                                <select class="select-modern" id="providerCountry">
-                                    <option value="">Select provider country/state...</option>
-                                     {/* Options populated by JS */}
-                                </select>
+                                <input list="providerCountries" id="providerCountry" class="select-modern" placeholder="Type or select a country/state..." autocomplete="off">
+                                <datalist id="providerCountries">
+                                    {/* Options will be populated by JavaScript */}
+                                </datalist>
                                 <svg class="select-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M6 9l6 6 6-6"/>
                                 </svg>
@@ -1206,6 +1373,8 @@
             }
         });
         
+        // showCountryDetails function has been moved to an earlier, global scope position and this duplicate is removed.
+
         // --- UTILITY FUNCTIONS ---
         function getCurrentDate() {
     return new Date().toISOString().split('T')[0];
@@ -1341,17 +1510,176 @@
             if (aiSummaryContainer) aiSummaryContainer.innerHTML = '';
 
             resultDisplay.innerHTML = `
-                <div class="result-icon pulse">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
-                        <path d="M12 2v4m0 12v4m-7-7h4m12 0h4"/>
-                        <path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M19.07 4.93l-2.83 2.83m-8.48 8.48l-2.83 2.83"/>
-                    </svg>
-                </div>
-                <div class="result-status">Analyzing Compliance...</div>
-                <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
-                    <button class="ai-explain-btn" onclick="getAIComplianceSummary()">✨ Get AI Explanation</button>
-                    <div id="aiSummaryDisplay" style="margin-top:1rem;"></div>
-                </div>`;
+        <div class="microchip-container">
+            <svg class="microchip" viewBox="0 0 128 128" width="128px" height="128px" role="img" aria-label="A square pops in emitting waves and lines, and sparks run through the lines">
+                <symbol id="dot-1"><circle r="3" cx="3" cy="38" /></symbol>
+                <symbol id="dot-2"><circle r="3" cx="3" cy="54" /></symbol>
+                <symbol id="dot-3"><circle r="3" cx="3" cy="70" /></symbol>
+                <symbol id="dot-4"><circle r="3" cx="3" cy="3" /></symbol>
+                <symbol id="dot-5"><circle r="3" cx="20" cy="3" /></symbol>
+                <symbol id="dot-6"><circle r="3" cx="3" cy="30" /></symbol>
+                <symbol id="dot-7"><circle r="3" cx="37" cy="3" /></symbol>
+                <symbol id="dot-8"><circle r="3" cx="54" cy="3" /></symbol>
+                <symbol id="dot-9"><circle r="3" cx="71" cy="3" /></symbol>
+                <symbol id="line-1"><polyline points="12 54,12 46,3 46,3 38" stroke-dasharray="42 42" /></symbol>
+                <symbol id="line-2"><polyline points="29 54,3 54" stroke-dasharray="42 42" /></symbol>
+                <symbol id="line-3"><polyline points="12 54,12 62,3 62,3 70" stroke-dasharray="42 42" /></symbol>
+                <symbol id="line-4"><polyline points="28 20,28 12,20 12,20 3" stroke-dasharray="60 60" /></symbol>
+                <symbol id="line-5"><polyline points="37 29,37 20,3 20,3 3" stroke-dasharray="60 60" /></symbol>
+                <symbol id="line-6"><polyline points="15 20,15 30,3 30" stroke-dasharray="60 60" /></symbol>
+                <symbol id="line-7"><polyline points="54 12,37 12,37 3" stroke-dasharray="43 43" /></symbol>
+                <symbol id="line-8"><polyline points="54 29,54 3" stroke-dasharray="43 43" /></symbol>
+                <symbol id="line-9"><polyline points="54 12,71 12,71 3" stroke-dasharray="43 43" /></symbol>
+                <symbol id="spark-1"><polyline points="12 54,12 46,3 46,3 38" stroke-dasharray="15 69" /></symbol>
+                <symbol id="spark-2"><polyline points="29 54,3 54" stroke-dasharray="15 69" /></symbol>
+                <symbol id="spark-3"><polyline points="12 54,12 62,3 62,3 70" stroke-dasharray="15 69" /></symbol>
+                <symbol id="spark-4"><polyline points="28 20,28 12,20 12,20 3" stroke-dasharray="15 105" /></symbol>
+                <symbol id="spark-5"><polyline points="37 29,37 20,3 20,3 3" stroke-dasharray="15 105" /></symbol>
+                <symbol id="spark-6"><polyline points="15 20,15 30,3 30" stroke-dasharray="15 105" /></symbol>
+                <symbol id="spark-7"><polyline points="54 12,37 12,37 3" stroke-dasharray="15 71" /></symbol>
+                <symbol id="spark-8"><polyline points="54 29,54 3" stroke-dasharray="15 71" /></symbol>
+                <symbol id="spark-9"><polyline points="54 12,71 12,71 3" stroke-dasharray="15 71" /></symbol>
+                <symbol id="wave"><rect x="3" y="3" rx="2.5" ry="2.5" width="44" height="44" /></symbol>
+                <g transform="translate(10,10)">
+                    <g class="microchip__lines" stroke-linecap="round" stroke-linejoin="round">
+                        <g>
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--1" href="#line-1" />
+                                <use class="microchip__spark microchip__spark--1" href="#spark-1" />
+                                <use class="microchip__line microchip__line--2" href="#line-2" />
+                                <use class="microchip__spark microchip__spark--2" href="#spark-2" />
+                                <use class="microchip__line microchip__line--3" href="#line-3" />
+                                <use class="microchip__spark microchip__spark--3" href="#spark-3" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--1" href="#dot-1" />
+                                <use class="microchip__dot microchip__dot--2" href="#dot-2" />
+                                <use class="microchip__dot microchip__dot--3" href="#dot-3" />
+                            </g>
+                        </g>
+                        <g>
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--4" href="#line-4" />
+                                <use class="microchip__spark microchip__spark--4" href="#spark-4" />
+                                <use class="microchip__line microchip__line--5" href="#line-5" />
+                                <use class="microchip__spark microchip__spark--5" href="#spark-5" />
+                                <use class="microchip__line microchip__line--6" href="#line-6" />
+                                <use class="microchip__spark microchip__spark--6" href="#spark-6" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--4" href="#dot-4" />
+                                <use class="microchip__dot microchip__dot--5" href="#dot-5" />
+                                <use class="microchip__dot microchip__dot--6" href="#dot-6" />
+                            </g>
+                        </g>
+                        <g>
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--7" href="#line-7" />
+                                <use class="microchip__spark microchip__spark--7" href="#spark-7" />
+                                <use class="microchip__line microchip__line--8" href="#line-8" />
+                                <use class="microchip__spark microchip__spark--8" href="#spark-8" />
+                                <use class="microchip__line microchip__line--9" href="#line-9" />
+                                <use class="microchip__spark microchip__spark--9" href="#spark-9" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--7" href="#dot-7" />
+                                <use class="microchip__dot microchip__dot--8" href="#dot-8" />
+                                <use class="microchip__dot microchip__dot--9" href="#dot-9" />
+                            </g>
+                        </g>
+                        <g transform="translate(108,0) scale(-1,1)">
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--4" href="#line-4" />
+                                <use class="microchip__spark microchip__spark--4" href="#spark-4" />
+                                <use class="microchip__line microchip__line--5" href="#line-5" />
+                                <use class="microchip__spark microchip__spark--5" href="#spark-5" />
+                                <use class="microchip__line microchip__line--6" href="#line-6" />
+                                <use class="microchip__spark microchip__spark--6" href="#spark-6" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--4" href="#dot-4" />
+                                <use class="microchip__dot microchip__dot--5" href="#dot-5" />
+                                <use class="microchip__dot microchip__dot--6" href="#dot-6" />
+                            </g>
+                        </g>
+                        <g transform="translate(108,0) scale(-1,1)">
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--1" href="#line-1" />
+                                <use class="microchip__spark microchip__spark--1" href="#spark-1" />
+                                <use class="microchip__line microchip__line--2" href="#line-2" />
+                                <use class="microchip__spark microchip__spark--2" href="#spark-2" />
+                                <use class="microchip__line microchip__line--3" href="#line-3" />
+                                <use class="microchip__spark microchip__spark--3" href="#spark-3" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--1" href="#dot-1" />
+                                <use class="microchip__dot microchip__dot--2" href="#dot-2" />
+                                <use class="microchip__dot microchip__dot--3" href="#dot-3" />
+                            </g>
+                        </g>
+                        <g transform="translate(108,108) scale(-1,-1)">
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--4" href="#line-4" />
+                                <use class="microchip__spark microchip__spark--4" href="#spark-4" />
+                                <use class="microchip__line microchip__line--5" href="#line-5" />
+                                <use class="microchip__spark microchip__spark--5" href="#spark-5" />
+                                <use class="microchip__line microchip__line--6" href="#line-6" />
+                                <use class="microchip__spark microchip__spark--6" href="#spark-6" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--4" href="#dot-4" />
+                                <use class="microchip__dot microchip__dot--5" href="#dot-5" />
+                                <use class="microchip__dot microchip__dot--6" href="#dot-6" />
+                            </g>
+                        </g>
+                        <g transform="translate(0,108) scale(1,-1)">
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--7" href="#line-7" />
+                                <use class="microchip__spark microchip__spark--7" href="#spark-7" />
+                                <use class="microchip__line microchip__line--8" href="#line-8" />
+                                <use class="microchip__spark microchip__spark--8" href="#spark-8" />
+                                <use class="microchip__line microchip__line--9" href="#line-9" />
+                                <use class="microchip__spark microchip__spark--9" href="#spark-9" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--7" href="#dot-7" />
+                                <use class="microchip__dot microchip__dot--8" href="#dot-8" />
+                                <use class="microchip__dot microchip__dot--9" href="#dot-9" />
+                            </g>
+                        </g>
+                        <g transform="translate(0,108) scale(1,-1)">
+                            <g fill="none" stroke="currentcolor">
+                                <use class="microchip__line microchip__line--4" href="#line-4" />
+                                <use class="microchip__spark microchip__spark--4" href="#spark-4" />
+                                <use class="microchip__line microchip__line--5" href="#line-5" />
+                                <use class="microchip__spark microchip__spark--5" href="#spark-5" />
+                                <use class="microchip__line microchip__line--6" href="#line-6" />
+                                <use class="microchip__spark microchip__spark--6" href="#spark-6" />
+                            </g>
+                            <g fill="currentcolor">
+                                <use class="microchip__dot microchip__dot--4" href="#dot-4" />
+                                <use class="microchip__dot microchip__dot--5" href="#dot-5" />
+                                <use class="microchip__dot microchip__dot--6" href="#dot-6" />
+                            </g>
+                        </g>
+                    </g>
+                    <g transform="translate(29,29)">
+                        <g class="microchip__center">
+                            <g fill="none" stroke="currentcolor" stroke-width="6">
+                                <use class="microchip__wave microchip__wave--1" href="#wave" />
+                                <use class="microchip__wave microchip__wave--2" href="#wave" />
+                            </g>
+                            <rect class="microchip__core" fill="currentcolor" rx="5" ry="5" width="50" height="50" />
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="result-status">Analyzing Compliance...</div>
+        <div id="aiSummaryContainer" style="width:100%; margin-top:1.5rem;">
+            <button class="ai-explain-btn" onclick="getAIComplianceSummary()">✨ Get AI Explanation</button>
+            <div id="aiSummaryDisplay" style="margin-top:1rem;"></div>
+        </div>`;
             
             setTimeout(() => {
                 const rule = findComplianceRule(providerJurisdiction, clientJurisdiction, service);
@@ -1633,7 +1961,8 @@
 
 
         // --- MODAL (COUNTRY DETAILS) ---
-        function showCountryDetails(countryName) {
+        // Make function globally accessible for button click handlers
+        window.showCountryDetails = function(countryName) {
             const country = complianceData.countries[countryName];
             if (!country) {
                 showNotification('Detailed requirements for ' + countryName + ' are being updated.', 'info');
@@ -1736,11 +2065,29 @@
         document.head.appendChild(notificationAnimationStyle);
         
         function getFlagForJurisdiction(jurisdictionName) {
+            // First try direct lookup
             const countryData = complianceData.countries[jurisdictionName];
             if (countryData && countryData.flag) {
                 return countryData.flag;
             }
-            return '🌐'; 
+            
+            // If country name has special characters or formatting differences, try to match
+            const normalizedName = jurisdictionName.toLowerCase().replace(/[&\s-]+/g, '').replace(/[,\.]/g, '');
+            
+            for (const [country, data] of Object.entries(complianceData.countries)) {
+                const normalizedCountry = country.toLowerCase().replace(/[&\s-]+/g, '').replace(/[,\.]/g, '');
+                if (normalizedCountry === normalizedName && data.flag) {
+                    return data.flag;
+                }
+            }
+            
+            // Check if it's a state format (State, Country)
+            if (jurisdictionName.includes(',')) {
+                const countryPart = jurisdictionName.split(',')[1].trim();
+                return getFlagForJurisdiction(countryPart); // Recursive call for the country part
+            }
+            
+            return '🌐'; // Default if no match found
         }
 
 
@@ -1772,41 +2119,70 @@
         }
 
         function populateJurisdictionDropdowns() {
-            const clientSelect = document.getElementById('clientCountry');
-            const providerSelect = document.getElementById('providerCountry');
+            const clientDatalist = document.getElementById('clientCountries');
+            const providerDatalist = document.getElementById('providerCountries');
             
-            if (!clientSelect || !providerSelect) return;
-
-            clientSelect.innerHTML = '<option value="">Select destination country/state...</option>';
-            providerSelect.innerHTML = '<option value="">Select provider country/state...</option>';
+            // Clear existing options
+            clientDatalist.innerHTML = '';
+            providerDatalist.innerHTML = '';
             
+            // Get the sorted regions
             const sortedRegions = Object.keys(complianceData.jurisdictions).sort();
-
+            
+            // For each region, add region and its countries
             sortedRegions.forEach(region => {
-                const jurisdictionsInRegion = complianceData.jurisdictions[region] ? complianceData.jurisdictions[region].slice().sort() : []; 
-
-                const clientOptgroup = document.createElement('optgroup');
-                clientOptgroup.label = region;
-                const providerOptgroup = document.createElement('optgroup');
-                providerOptgroup.label = region;
+                // Add the region as an option
+                const regionOption1 = document.createElement('option');
+                regionOption1.value = region;
+                regionOption1.textContent = `🌐 ${region}`;
+                clientDatalist.appendChild(regionOption1);
                 
-                jurisdictionsInRegion.forEach(jurisdictionName => {
-                    const flag = getFlagForJurisdiction(jurisdictionName);
-
-                    const clientOption = document.createElement('option');
-                    clientOption.value = jurisdictionName;
-                    clientOption.textContent = `${flag} ${jurisdictionName}`;
-                    clientOptgroup.appendChild(clientOption);
+                const regionOption2 = regionOption1.cloneNode(true);
+                providerDatalist.appendChild(regionOption2);
+                
+                // Add all countries in the region
+                const countriesInRegion = complianceData.jurisdictions[region];
+                if (Array.isArray(countriesInRegion)) {
+                    // Sort countries alphabetically
+                    const sortedCountries = [...countriesInRegion].sort();
                     
-                    const providerOption = document.createElement('option');
-                    providerOption.value = jurisdictionName;
-                    providerOption.textContent = `${flag} ${jurisdictionName}`;
-                    providerOptgroup.appendChild(providerOption);
-                });
-                
-                clientSelect.appendChild(clientOptgroup);
-                providerSelect.appendChild(providerOptgroup);
+                    sortedCountries.forEach(countryName => {
+                        const flag = getFlagForJurisdiction(countryName);
+                        
+                        // Add to client dropdown
+                        const countryOption1 = document.createElement('option');
+                        countryOption1.value = countryName;
+                        countryOption1.textContent = `${flag} ${countryName}`;
+                        clientDatalist.appendChild(countryOption1);
+                        
+                        // Add to provider dropdown
+                        const countryOption2 = countryOption1.cloneNode(true);
+                        providerDatalist.appendChild(countryOption2);
+                        
+                        // Handle states/provinces if they exist
+                        const countryData = complianceData.countries[countryName];
+                        if (countryData && countryData.states) {
+                            const stateNames = Object.keys(countryData.states).sort();
+                            stateNames.forEach(stateName => {
+                                const fullName = `${stateName}, ${countryName}`;
+                                
+                                // Add to client dropdown
+                                const stateOption1 = document.createElement('option');
+                                stateOption1.value = fullName;
+                                stateOption1.textContent = `${flag} ${fullName}`;
+                                clientDatalist.appendChild(stateOption1);
+                                
+                                // Add to provider dropdown
+                                const stateOption2 = stateOption1.cloneNode(true);
+                                providerDatalist.appendChild(stateOption2);
+                            });
+                        }
+                    });
+                }
             });
+            
+            // Update the counts in the UI
+            updateSummaryCounts();
         }
     </script>
     <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; padding: 20px;">
